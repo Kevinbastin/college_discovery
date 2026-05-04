@@ -100,17 +100,18 @@ export default function HomePage() {
   return (
     <div>
       {/* ===== HERO ===== */}
-      <section className="gradient-hero dot-pattern py-20 md:py-28">
+      <section className="relative overflow-hidden bg-[#EFF6FF] py-20 md:py-28">
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top,rgba(37,99,235,0.12),transparent_55%)]" />
         <div className="container-main text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
+          <div className="inline-flex items-center gap-2 bg-white border border-[#DBEAFE] rounded-full px-4 py-1.5 mb-6 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-[#4ADE80] animate-pulse" />
-            <span className="text-xs text-white/90 font-medium">Trusted by 10,000+ students across India</span>
+            <span className="text-xs text-[#1E3A8A] font-medium">Trusted by 10,000+ students across India</span>
           </div>
 
-          <h1 className="text-4xl md:text-7xl font-bold text-white mb-4 leading-tight">
-            Find Your <span className="text-[#60A5FA]">Perfect College</span><br className="hidden md:block" /> in India
+          <h1 className="text-4xl md:text-7xl font-bold text-[#0F172A] mb-4 leading-tight">
+            Find Your <span className="text-[#2563EB]">Perfect College</span><br className="hidden md:block" /> in India
           </h1>
-          <p className="text-base md:text-lg text-blue-200 mb-8 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-[#475569] mb-8 max-w-2xl mx-auto">
             Search from 500+ colleges. Compare fees, placements, and rankings. Make an informed decision — zero ads, zero clutter.
           </p>
 
@@ -119,7 +120,7 @@ export default function HomePage() {
           <div className="flex flex-wrap justify-center gap-2">
             {quickFilters.map(f => (
               <button key={f} onClick={() => handleQuickFilter(f)}
-                className="px-4 py-2 text-sm font-medium bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/90 hover:bg-white/20 hover:border-white/40 transition-all duration-200">
+                className="px-4 py-2 text-sm font-medium bg-white border border-[#DBEAFE] rounded-full text-[#1E293B] hover:bg-[#F8FAFC] hover:border-[#93C5FD] transition-all duration-200 shadow-sm">
                 {f}
               </button>
             ))}
@@ -266,15 +267,16 @@ export default function HomePage() {
       </section>
 
       {/* ===== CTA ===== */}
-      <section className="gradient-hero dot-pattern py-16">
+      <section className="relative overflow-hidden bg-[#DBEAFE] py-16">
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(30,58,138,0.12),transparent_60%)]" />
         <div className="container-main text-center relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Ready to find your perfect college?</h2>
-          <p className="text-sm text-blue-200 mb-6 max-w-lg mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-3">Ready to find your perfect college?</h2>
+          <p className="text-sm text-[#475569] mb-6 max-w-lg mx-auto">
             Join 10,000+ students already using CollegeFind to make smarter college decisions
           </p>
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <Link href="/colleges" className="btn-orange !text-lg no-underline">Browse All Colleges</Link>
-            <Link href="/predictor" className="px-6 h-[48px] inline-flex items-center justify-center border-2 border-white text-white font-bold rounded hover:bg-white/10 transition-all no-underline">Try College Predictor</Link>
+            <Link href="/predictor" className="px-6 h-[48px] inline-flex items-center justify-center border-2 border-[#1E3A8A] text-[#1E3A8A] font-bold rounded hover:bg-[#EFF6FF] transition-all no-underline bg-white">Try College Predictor</Link>
           </div>
         </div>
       </section>
