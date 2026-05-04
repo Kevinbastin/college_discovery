@@ -89,3 +89,107 @@ export interface FilterState {
 }
 
 export type ExamType = 'JEE_MAIN' | 'JEE_ADVANCED' | 'NEET' | 'CAT' | 'GATE';
+
+// --- Advanced Types ---
+
+export type ViewMode = 'grid' | 'list';
+
+export type CategoryType = 'General' | 'OBC' | 'SC' | 'ST' | 'EWS';
+
+export type ExamFilter = ExamType;
+
+export interface CutoffData {
+  [exam: string]: {
+    [year: string]: {
+      [category: string]: number;
+    };
+  } | number; // backward compat with flat structure
+}
+
+export interface Review {
+  id: string;
+  rating: number;
+  title: string;
+  text: string;
+  authorName: string;
+  collegeName?: string;
+  date: string;
+  infrastructure: number;
+  faculty: number;
+  placements: number;
+  campusLife: number;
+  helpful: number;
+}
+
+export interface Testimonial {
+  quote: string;
+  name: string;
+  college: string;
+  rating: number;
+  avatar?: string;
+}
+
+export interface TrendingExam {
+  name: string;
+  date: string;
+  status: 'upcoming' | 'ongoing' | 'completed';
+  registrationOpen: boolean;
+}
+
+export interface CategoryCard {
+  name: string;
+  icon: string;
+  count: number;
+  href: string;
+  color: string;
+}
+
+export interface ExamInfo {
+  id: string;
+  name: string;
+  shortName: string;
+  type: ExamType;
+  conductingBody: string;
+  examDate: string;
+  registrationDeadline: string;
+  resultDate: string;
+  eligibility: string;
+  totalSeats: number;
+  examPattern: string;
+  syllabus: string[];
+  status: 'upcoming' | 'ongoing' | 'completed';
+  registrationOpen: boolean;
+  collegeCounts: number;
+}
+
+export interface CourseInfo {
+  name: string;
+  slug: string;
+  duration: string;
+  level: 'UG' | 'PG' | 'Doctoral';
+  icon: string;
+  description: string;
+  eligibility: string;
+  avgFeesRange: string;
+  avgSalary: string;
+  careerOptions: string[];
+  topExams: string[];
+  collegeCounts: number;
+}
+
+export interface Article {
+  id: string;
+  title: string;
+  excerpt: string;
+  category: 'exam_news' | 'admission' | 'college_news' | 'career' | 'scholarship';
+  date: string;
+  readTime: string;
+  icon: string;
+}
+
+export interface RankingEntry {
+  rank: number;
+  college: College;
+  score?: number;
+  category: string;
+}

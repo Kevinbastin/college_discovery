@@ -6,6 +6,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const exam = searchParams.get('exam');
     const rankStr = searchParams.get('rank');
+    const category = searchParams.get('category') || 'General';
 
     if (!exam || !['JEE_MAIN', 'JEE_ADVANCED', 'NEET', 'CAT', 'GATE'].includes(exam)) {
       return NextResponse.json({ error: 'Validation failed', details: { exam: 'Must be JEE_MAIN, JEE_ADVANCED, NEET, CAT, or GATE' } }, { status: 400 });

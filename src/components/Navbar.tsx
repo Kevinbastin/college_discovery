@@ -23,8 +23,12 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/colleges', label: 'Colleges' },
+    { href: '/exams', label: 'Exams' },
+    { href: '/courses', label: 'Courses' },
+    { href: '/rankings', label: 'Rankings' },
     { href: '/compare', label: 'Compare' },
     { href: '/predictor', label: 'Predictor' },
+    { href: '/articles', label: 'News' },
     ...(session ? [{ href: '/saved', label: 'Saved' }] : []),
   ];
 

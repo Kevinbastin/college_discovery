@@ -2,13 +2,14 @@
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import CollegeCard from '@/components/CollegeCard';
+import CollegeCardHorizontal from '@/components/CollegeCardHorizontal';
 import CollegeCardSkeleton from '@/components/CollegeCardSkeleton';
 import FilterSidebar from '@/components/FilterSidebar';
 import Pagination from '@/components/Pagination';
 import CompareBar from '@/components/CompareBar';
 import Breadcrumb from '@/components/Breadcrumb';
 import EmptyState from '@/components/EmptyState';
-import { College } from '@/types';
+import { College, ViewMode } from '@/types';
 import { useSession } from 'next-auth/react';
 
 function CollegesContent() {
@@ -23,6 +24,7 @@ function CollegesContent() {
   const [savedIds, setSavedIds] = useState<string[]>([]);
   const [states, setStates] = useState<string[]>([]);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   const filters = {
     search: searchParams.get('search') || '',
@@ -33,6 +35,8 @@ function CollegesContent() {
     naac: searchParams.get('naac') ? searchParams.get('naac')!.split(',') : [],
     minRating: searchParams.get('minRating') || '',
     courses: searchParams.get('courses') ? searchParams.get('courses')!.split(',') : [],
+    exams: searchParams.get('exams') ? searchParams.get('exams')!.split(',') : [],
+    established: searchParams.get('established') || '',
     page: parseInt(searchParams.get('page') || '1'),
     sort: searchParams.get('sort') || 'rating',
   };
@@ -60,6 +64,8 @@ function CollegesContent() {
     if (filters.naac.length) params.set('naac', filters.naac.join(','));
     if (filters.minRating) params.set('minRating', filters.minRating);
     if (filters.courses.length) params.set('courses', filters.courses.join(','));
+    if (filters.exams.length) params.set('exams', filters.exams.join(','));
+    if (filters.established) params.set('established', filters.established);
     params.set('page', String(filters.page));
     params.set('sort', filters.sort);
 
@@ -130,7 +136,7 @@ function CollegesContent() {
         {/* Desktop Sidebar */}
         <div className="hidden lg:block w-[260px] shrink-0">
           <FilterSidebar
-            values={{ state: filters.state, type: filters.type, minFees: filters.minFees, maxFees: filters.maxFees, naac: filters.naac, minRating: filters.minRating, courses: filters.courses }}
+            values={{ state: filters.state, type: filters.type, minFees: filters.minFees, maxFees: filters.maxFees, naac: filters.naac, minRating: filters.minRating, courses: filters.courses, exams: filters.exams, established: filters.established }}
             onChange={handleFilterChange} onClear={clearFilters} states={states} />
         </div>
 
@@ -151,7 +157,7 @@ function CollegesContent() {
                 <button onClick={() => setMobileFiltersOpen(false)} className="p-1">✕</button>
               </div>
               <FilterSidebar
-                values={{ state: filters.state, type: filters.type, minFees: filters.minFees, maxFees: filters.maxFees, naac: filters.naac, minRating: filters.minRating, courses: filters.courses }}
+                values={{ state: filters.state, type: filters.type, minFees: filters.minFees, maxFees: filters.maxFees, naac: filters.naac, minRating: filters.minRating, courses: filters.courses, exams: filters.exams, established: filters.established }}
                 onChange={(v) => { handleFilterChange(v); setMobileFiltersOpen(false); }} onClear={() => { clearFilters(); setMobileFiltersOpen(false); }} states={states} />
             </div>
           </>
@@ -159,16 +165,37 @@ function CollegesContent() {
 
         {/* Main Content */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-4 gap-3">
             <span className="text-sm text-[#64748B]">{total} colleges found</span>
-            <select value={filters.sort} onChange={e => updateURL({ sort: e.target.value, page: 1 })}
-              className="input-field !w-auto !h-[36px] text-sm">
-              <option value="rating">Rating</option>
-              <option value="fees_asc">Fees Low→High</option>
-              <option value="fees_desc">Fees High→Low</option>
-              <option value="name">Name A-Z</option>
-              <option value="newest">Newest</option>
-            </select>
+            <div className="flex items-center gap-2">
+              {/* View toggle */}
+              <div className="hidden md:flex items-center border border-[#E2E8F0] rounded overflow-hidden">
+                <button onClick={() => setViewMode('grid')}
+                  className={`p-2 transition-colors ${viewMode === 'grid' ? 'bg-[#2563EB] text-white' : 'text-[#64748B] hover:bg-[#F1F5F9]'}`}
+                  title="Grid view">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+                  </svg>
+                </button>
+                <button onClick={() => setViewMode('list')}
+                  className={`p-2 transition-colors ${viewMode === 'list' ? 'bg-[#2563EB] text-white' : 'text-[#64748B] hover:bg-[#F1F5F9]'}`}
+                  title="List view">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                  </svg>
+                </button>
+              </div>
+
+              <select value={filters.sort} onChange={e => updateURL({ sort: e.target.value, page: 1 })}
+                className="input-field !w-auto !h-[36px] text-sm">
+                <option value="rating">Rating</option>
+                <option value="fees_asc">Fees Low→High</option>
+                <option value="fees_desc">Fees High→Low</option>
+                <option value="name">Name A-Z</option>
+                <option value="newest">Newest</option>
+              </select>
+            </div>
           </div>
 
           {loading ? (
@@ -179,9 +206,15 @@ function CollegesContent() {
             <EmptyState icon="🔍" title="No colleges found" description="Try adjusting your filters or search query" actionLabel="Clear Filters" onAction={clearFilters} />
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {colleges.map(c => <CollegeCard key={c.id} college={c} savedIds={savedIds} />)}
-              </div>
+              {viewMode === 'grid' ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {colleges.map(c => <CollegeCard key={c.id} college={c} savedIds={savedIds} />)}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  {colleges.map(c => <CollegeCardHorizontal key={c.id} college={c} savedIds={savedIds} />)}
+                </div>
+              )}
               <Pagination currentPage={filters.page} totalPages={totalPages} totalItems={total} itemsPerPage={12}
                 onPageChange={(p) => { updateURL({ page: p }); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
             </>

@@ -62,6 +62,154 @@ const colleges: any[][] = [
 ["Flame University","FLAME","Pune","Maharashtra","PRIVATE",2015,2000,"A",400000,68,5.0,18.0,3.4,300,["Deloitte","EY","KPMG","Wipro"],["BBA","MBA","B.A"],{CAT:75}],
 ["Woxsen University","Woxsen","Hyderabad","Telangana","PRIVATE",2014,3000,"A",450000,70,6.0,22.0,3.6,350,["Deloitte","Amazon","EY","Accenture"],["BBA","MBA","B.Tech"],{CAT:78}],
 ["Sai University","Sai Univ","Chennai","Tamil Nadu","PRIVATE",2020,800,"B++",300000,60,4.5,15.0,3.2,100,["TCS","Infosys","Zoho","Wipro"],["B.Tech","B.Sc"],{JEE_MAIN:65000}],
+["IIT BHU Varanasi","IIT BHU","Varanasi","Uttar Pradesh","GOVERNMENT",1919,8500,"A++",220000,91,12.5,58.0,4.5,1500,["Google","Microsoft","Samsung","Amazon"],["B.Tech","M.Tech","PhD"],{JEE_ADVANCED:3500}],
+["IIT Indore","IIT Indore","Indore","Madhya Pradesh","GOVERNMENT",2009,3500,"A+",210000,86,10.5,45.0,4.2,700,["Google","Microsoft","Amazon","TCS"],["B.Tech","M.Tech","PhD"],{JEE_ADVANCED:5000}],
+["IIT Tirupati","IIT Tirupati","Tirupati","Andhra Pradesh","GOVERNMENT",2015,2000,"A",200000,80,9.0,38.0,3.9,350,["TCS","Infosys","Amazon","Wipro"],["B.Tech","M.Tech"],{JEE_ADVANCED:6500}],
+["IIT Palakkad","IIT Palakkad","Palakkad","Kerala","GOVERNMENT",2015,1500,"A",195000,78,8.5,35.0,3.8,300,["TCS","Infosys","Google","Amazon"],["B.Tech","M.Tech"],{JEE_ADVANCED:7000}],
+["IIT Dharwad","IIT Dharwad","Dharwad","Karnataka","GOVERNMENT",2016,1200,"B++",190000,75,8.0,32.0,3.7,250,["TCS","Infosys","Wipro","Cognizant"],["B.Tech","M.Tech"],{JEE_ADVANCED:7500}],
+["IIT Bhilai","IIT Bhilai","Bhilai","Chhattisgarh","GOVERNMENT",2016,1000,"B++",185000,74,7.8,30.0,3.6,200,["TCS","Amazon","Flipkart","Google"],["B.Tech","M.Tech"],{JEE_ADVANCED:8000}],
+["IIT Jammu","IIT Jammu","Jammu","Jammu & Kashmir","GOVERNMENT",2016,900,"B+",180000,72,7.5,28.0,3.5,180,["TCS","Infosys","Wipro","Amazon"],["B.Tech","M.Tech"],{JEE_ADVANCED:8500}],
+["NIT Rourkela","NIT Rourkela","Rourkela","Odisha","GOVERNMENT",1961,7500,"A+",170000,85,8.5,35.0,4.2,1300,["TCS","Infosys","TATA Steel","Cognizant"],["B.Tech","M.Tech","PhD"],{JEE_MAIN:8000}],
+["NIT Durgapur","NIT Durgapur","Durgapur","West Bengal","GOVERNMENT",1960,6000,"A",160000,82,7.8,30.0,4.0,1100,["TCS","Wipro","Cognizant","HCL"],["B.Tech","M.Tech"],{JEE_MAIN:13000}],
+["NIT Silchar","NIT Silchar","Silchar","Assam","GOVERNMENT",1967,4500,"A",145000,78,7.0,26.0,3.9,900,["TCS","Infosys","Wipro","Cognizant"],["B.Tech","M.Tech"],{JEE_MAIN:18000}],
+["NIT Hamirpur","NIT Hamirpur","Hamirpur","Himachal Pradesh","GOVERNMENT",1986,4000,"A",140000,76,6.5,24.0,3.8,800,["TCS","Infosys","Wipro","HCL"],["B.Tech","M.Tech"],{JEE_MAIN:20000}],
+["NIT Agartala","NIT Agartala","Agartala","Tripura","GOVERNMENT",1965,3500,"B++",130000,70,5.8,20.0,3.6,700,["TCS","Infosys","Wipro","Cognizant"],["B.Tech","M.Tech"],{JEE_MAIN:30000}],
+["NIT Meghalaya","NIT Meghalaya","Shillong","Meghalaya","GOVERNMENT",2010,2000,"B+",120000,65,5.0,18.0,3.4,400,["TCS","Infosys","Wipro"],["B.Tech"],{JEE_MAIN:40000}],
+["IIIT Hyderabad","IIIT Hyderabad","Hyderabad","Telangana","GOVERNMENT",1998,3000,"A++",300000,92,14.0,65.0,4.5,800,["Google","Microsoft","Amazon","Facebook"],["B.Tech","M.Tech","PhD"],{JEE_MAIN:3000}],
+["IIIT Bangalore","IIIT Bangalore","Bangalore","Karnataka","GOVERNMENT",1999,2500,"A+",350000,90,13.0,55.0,4.4,600,["Google","Microsoft","Samsung","Amazon"],["B.Tech","M.Tech"],{JEE_MAIN:4000}],
+["IIIT Allahabad","IIIT Allahabad","Prayagraj","Uttar Pradesh","GOVERNMENT",1999,3500,"A",180000,85,9.0,40.0,4.1,900,["TCS","Microsoft","Amazon","Google"],["B.Tech","M.Tech"],{JEE_MAIN:7000}],
+["IIIT Delhi","IIIT Delhi","New Delhi","Delhi","GOVERNMENT",2008,2800,"A+",310000,91,13.5,60.0,4.4,700,["Google","Microsoft","Amazon","Adobe"],["B.Tech","M.Tech","PhD"],{JEE_MAIN:3500}],
+["Delhi Technological University","DTU","New Delhi","Delhi","GOVERNMENT",1941,8000,"A+",165000,87,9.5,42.0,4.3,1500,["Google","Microsoft","Amazon","Samsung"],["B.Tech","M.Tech","MBA"],{JEE_MAIN:6000}],
+["Netaji Subhas University of Technology","NSUT","New Delhi","Delhi","GOVERNMENT",1983,6000,"A+",160000,86,9.0,40.0,4.2,1200,["Google","Microsoft","Amazon","Flipkart"],["B.Tech","M.Tech"],{JEE_MAIN:6500}],
+["PEC Chandigarh","PEC","Chandigarh","Chandigarh","GOVERNMENT",1921,5500,"A",120000,82,7.5,30.0,4.0,1000,["TCS","Infosys","Amazon","Microsoft"],["B.Tech","M.Tech"],{JEE_MAIN:15000}],
+["IIM Indore","IIM Indore","Indore","Madhya Pradesh","GOVERNMENT",1996,1000,"A+",2000000,96,23.0,85.0,4.5,600,["McKinsey","BCG","Amazon","Deloitte"],["MBA","PhD"],{CAT:96}],
+["IIM Kozhikode","IIM Kozhikode","Kozhikode","Kerala","GOVERNMENT",1996,1100,"A+",1950000,95,22.0,80.0,4.5,650,["Deloitte","EY","KPMG","Amazon"],["MBA","PhD"],{CAT:95}],
+["IIM Shillong","IIM Shillong","Shillong","Meghalaya","GOVERNMENT",2007,600,"A",1500000,90,16.0,50.0,4.1,300,["Deloitte","EY","TCS","Wipro"],["MBA"],{CAT:88}],
+["IIM Ranchi","IIM Ranchi","Ranchi","Jharkhand","GOVERNMENT",2010,550,"A",1600000,91,17.0,55.0,4.1,350,["EY","Deloitte","Amazon","Accenture"],["MBA"],{CAT:90}],
+["FMS Delhi","FMS Delhi","New Delhi","Delhi","GOVERNMENT",1954,800,"A++",25000,96,25.0,90.0,4.6,500,["McKinsey","BCG","Goldman Sachs","JP Morgan"],["MBA"],{CAT:98}],
+["JIPMER Puducherry","JIPMER","Puducherry","Puducherry","GOVERNMENT",1823,3500,"A++",12000,96,10.0,22.0,4.7,1400,["JIPMER Hospital","AIIMS","Apollo"],["MBBS","MD","MS","PhD"],{NEET:300}],
+["King Georges Medical University","KGMU","Lucknow","Uttar Pradesh","GOVERNMENT",1911,3000,"A+",25000,92,9.0,18.0,4.4,1200,["KGMU Hospital","AIIMS","Fortis"],["MBBS","MD","MS"],{NEET:1000}],
+["Grant Medical College","GMC Mumbai","Mumbai","Maharashtra","GOVERNMENT",1845,2500,"A+",20000,90,8.5,16.0,4.3,1000,["JJ Hospital","KEM","Hinduja"],["MBBS","MD"],{NEET:1500}],
+["BJ Medical College","BJMC","Ahmedabad","Gujarat","GOVERNMENT",1946,2000,"A",22000,89,8.0,16.0,4.2,900,["Civil Hospital","Apollo","Sterling"],["MBBS","MD","MS"],{NEET:2000}],
+["Manipal Academy of Higher Education","MAHE","Manipal","Karnataka","PRIVATE",1953,15000,"A++",500000,85,8.5,40.0,4.3,2500,["Manipal Hospitals","TCS","Wipro","Amazon"],["B.Tech","MBBS","MBA","BBA"],{JEE_MAIN:18000,NEET:4000}],
+["Amrita Vishwa Vidyapeetham","Amrita","Coimbatore","Tamil Nadu","PRIVATE",2003,12000,"A++",250000,80,7.0,30.0,4.0,1800,["TCS","Infosys","Wipro","Amazon"],["B.Tech","M.Tech","MBBS","MBA"],{JEE_MAIN:25000,NEET:6000}],
+["Jamia Millia Islamia","JMI","New Delhi","Delhi","GOVERNMENT",1920,7000,"A++",35000,75,5.5,22.0,4.1,2000,["TCS","Infosys","HCL","Wipro"],["B.Tech","B.A","MBA","LLB","B.Com"],{}],
+["Banaras Hindu University","BHU","Varanasi","Uttar Pradesh","GOVERNMENT",1916,20000,"A++",15000,78,5.8,24.0,4.2,3000,["TCS","Infosys","BHEL","NTPC"],["B.Tech","MBBS","B.A","B.Sc","MBA","LLB","PhD"],{JEE_MAIN:35000,NEET:4000}],
+["Aligarh Muslim University","AMU","Aligarh","Uttar Pradesh","GOVERNMENT",1920,18000,"A",12000,72,4.8,18.0,3.9,2800,["TCS","Infosys","Wipro","HCL"],["B.Tech","MBBS","B.A","B.Sc","MBA","LLB"],{JEE_MAIN:40000}],
+["Presidency University","Presidency","Kolkata","West Bengal","GOVERNMENT",1817,3000,"A+",8000,70,4.5,15.0,4.0,600,["TCS","Deloitte","Cognizant","EY"],["B.A","B.Sc","M.A","M.Sc","PhD"],{}],
+["Christ University","Christ","Bangalore","Karnataka","PRIVATE",1969,15000,"A++",200000,78,6.0,25.0,4.0,2200,["Deloitte","EY","KPMG","TCS","Amazon"],["BBA","MBA","B.Com","B.A","B.Sc","LLB"],{CAT:80}],
+["NMIMS Mumbai","NMIMS","Mumbai","Maharashtra","PRIVATE",1981,8000,"A+",500000,88,12.0,45.0,4.2,1500,["JP Morgan","Goldman Sachs","Deloitte","Amazon"],["MBA","B.Tech","BBA","LLB"],{CAT:92}],
+["SP Jain Institute","SPJIMR","Mumbai","Maharashtra","PRIVATE",1981,600,"A++",2100000,97,26.0,95.0,4.6,400,["McKinsey","BCG","Amazon","Google"],["MBA"],{CAT:97}],
+["NLSIU Hyderabad","NALSAR","Hyderabad","Telangana","GOVERNMENT",1998,700,"A+",200000,90,12.0,40.0,4.4,400,["AZB","Trilegal","Cyril Amarchand","S&R"],["LLB","LLM"],{}],
+["NLIU Bhopal","NLIU","Bhopal","Madhya Pradesh","GOVERNMENT",1997,600,"A",180000,85,10.0,32.0,4.2,350,["AZB","Trilegal","Khaitan","HSA"],["LLB","LLM"],{}],
+["IIT Mandi","IIT Mandi","Mandi","Himachal Pradesh","GOVERNMENT",2009,2500,"A",200000,82,9.5,40.0,4.0,500,["Google","Amazon","Samsung","TCS"],["B.Tech","M.Tech","PhD"],{JEE_ADVANCED:5500}],
+["IIT Ropar","IIT Ropar","Rupnagar","Punjab","GOVERNMENT",2008,2200,"A",195000,80,9.0,38.0,3.9,450,["Microsoft","Amazon","TCS","Samsung"],["B.Tech","M.Tech"],{JEE_ADVANCED:6000}],
+["IIT Patna","IIT Patna","Patna","Bihar","GOVERNMENT",2008,2000,"A",190000,79,8.8,36.0,3.8,400,["TCS","Amazon","Flipkart","Wipro"],["B.Tech","M.Tech","PhD"],{JEE_ADVANCED:6200}],
+["IIT Bhubaneswar","IIT Bhubaneswar","Bhubaneswar","Odisha","GOVERNMENT",2008,2300,"A+",205000,83,10.0,42.0,4.1,500,["Google","Microsoft","Amazon","TCS"],["B.Tech","M.Tech","PhD"],{JEE_ADVANCED:5200}],
+["IIT Gandhinagar","IIT Gandhinagar","Gandhinagar","Gujarat","GOVERNMENT",2008,2500,"A+",210000,84,10.5,45.0,4.2,550,["Google","Microsoft","Adobe","TCS"],["B.Tech","M.Tech","PhD"],{JEE_ADVANCED:4800}],
+["IIT Jodhpur","IIT Jodhpur","Jodhpur","Rajasthan","GOVERNMENT",2008,2000,"A",195000,80,9.0,38.0,3.9,400,["Amazon","TCS","Flipkart","Samsung"],["B.Tech","M.Tech"],{JEE_ADVANCED:6000}],
+["NIT Jamshedpur","NIT Jamshedpur","Jamshedpur","Jharkhand","GOVERNMENT",1960,5500,"A",155000,81,7.5,28.0,4.0,1000,["TATA Steel","TCS","Infosys","Wipro"],["B.Tech","M.Tech"],{JEE_MAIN:14000}],
+["NIT Kurukshetra","NIT Kurukshetra","Kurukshetra","Haryana","GOVERNMENT",1963,5000,"A",150000,80,7.2,26.0,3.9,900,["TCS","Infosys","Wipro","HCL"],["B.Tech","M.Tech"],{JEE_MAIN:16000}],
+["NIT Patna","NIT Patna","Patna","Bihar","GOVERNMENT",1886,4500,"A",145000,78,6.8,24.0,3.8,850,["TCS","Infosys","Wipro","Cognizant"],["B.Tech","M.Tech"],{JEE_MAIN:19000}],
+["NIT Raipur","NIT Raipur","Raipur","Chhattisgarh","GOVERNMENT",1956,4000,"B++",135000,75,6.2,22.0,3.7,750,["TCS","Infosys","Wipro","HCL"],["B.Tech","M.Tech"],{JEE_MAIN:22000}],
+["NIT Srinagar","NIT Srinagar","Srinagar","Jammu & Kashmir","GOVERNMENT",1960,3500,"B++",130000,72,5.8,20.0,3.6,650,["TCS","Infosys","Wipro"],["B.Tech","M.Tech"],{JEE_MAIN:25000}],
+["NIT Goa","NIT Goa","Goa","Goa","GOVERNMENT",2010,1800,"B+",125000,70,5.5,18.0,3.5,350,["TCS","Infosys","Wipro"],["B.Tech"],{JEE_MAIN:28000}],
+["NIT Uttarakhand","NIT Uttarakhand","Srinagar","Uttarakhand","GOVERNMENT",2009,2000,"B+",120000,68,5.2,17.0,3.4,400,["TCS","Infosys","Wipro"],["B.Tech"],{JEE_MAIN:32000}],
+["NIT Arunachal Pradesh","NIT AP","Yupia","Arunachal Pradesh","GOVERNMENT",2010,1500,"B+",115000,62,4.5,14.0,3.2,300,["TCS","Infosys"],["B.Tech"],{JEE_MAIN:45000}],
+["NIT Sikkim","NIT Sikkim","Ravangla","Sikkim","GOVERNMENT",2010,1200,"B+",110000,60,4.2,13.0,3.1,250,["TCS","Infosys"],["B.Tech"],{JEE_MAIN:48000}],
+["NIT Manipur","NIT Manipur","Imphal","Manipur","GOVERNMENT",2010,1300,"B+",112000,61,4.3,13.5,3.1,280,["TCS","Infosys","Wipro"],["B.Tech"],{JEE_MAIN:47000}],
+["NIT Mizoram","NIT Mizoram","Aizawl","Mizoram","GOVERNMENT",2010,1100,"B+",108000,58,4.0,12.0,3.0,220,["TCS","Infosys"],["B.Tech"],{JEE_MAIN:50000}],
+["NIT Nagaland","NIT Nagaland","Dimapur","Nagaland","GOVERNMENT",2010,1000,"B+",105000,57,3.8,11.5,3.0,200,["TCS","Infosys"],["B.Tech"],{JEE_MAIN:52000}],
+["VJTI Mumbai","VJTI","Mumbai","Maharashtra","GOVERNMENT",1887,4000,"A+",90000,85,8.0,32.0,4.2,800,["TCS","L&T","Siemens","Amazon"],["B.Tech","M.Tech"],{JEE_MAIN:10000}],
+["College of Engineering Pune","COEP","Pune","Maharashtra","GOVERNMENT",1854,4500,"A+",95000,84,7.8,30.0,4.1,900,["TCS","Persistent","Wipro","Amazon"],["B.Tech","M.Tech"],{JEE_MAIN:11000}],
+["Jadavpur University Engineering","JU Engineering","Kolkata","West Bengal","GOVERNMENT",1955,4000,"A+",25000,86,8.5,35.0,4.3,800,["TCS","Cognizant","Amazon","Google"],["B.Tech","M.Tech","PhD"],{JEE_MAIN:8000}],
+["IISc Bangalore","IISc","Bangalore","Karnataka","GOVERNMENT",1909,4000,"A++",35000,92,14.0,60.0,4.8,1200,["Google","Microsoft","Intel","Samsung"],["B.Sc","M.Tech","PhD"],{JEE_ADVANCED:1000,GATE:500}],
+["Indian Statistical Institute","ISI Kolkata","Kolkata","West Bengal","GOVERNMENT",1931,1500,"A++",10000,88,12.0,50.0,4.6,500,["Google","Microsoft","Goldman Sachs","Amazon"],["B.Sc","M.Sc","PhD"],{}],
+["CMI Chennai","CMI","Chennai","Tamil Nadu","GOVERNMENT",1989,500,"A",15000,85,11.0,45.0,4.4,200,["Google","Microsoft","Goldman Sachs"],["B.Sc","M.Sc","PhD"],{}],
+["IIM Nagpur","IIM Nagpur","Nagpur","Maharashtra","GOVERNMENT",2015,400,"B++",1400000,85,15.0,45.0,3.9,200,["Deloitte","EY","Amazon","TCS"],["MBA"],{CAT:85}],
+["IIM Amritsar","IIM Amritsar","Amritsar","Punjab","GOVERNMENT",2015,350,"B++",1350000,84,14.5,42.0,3.8,180,["Deloitte","EY","Wipro","TCS"],["MBA"],{CAT:83}],
+["IIM Bodh Gaya","IIM Bodh Gaya","Bodh Gaya","Bihar","GOVERNMENT",2015,300,"B+",1300000,82,13.0,38.0,3.7,150,["Deloitte","TCS","Wipro"],["MBA"],{CAT:80}],
+["IIM Jammu","IIM Jammu","Jammu","Jammu & Kashmir","GOVERNMENT",2016,280,"B+",1250000,81,12.5,36.0,3.6,140,["Deloitte","EY","TCS"],["MBA"],{CAT:78}],
+["IIM Sambalpur","IIM Sambalpur","Sambalpur","Odisha","GOVERNMENT",2015,300,"B+",1280000,80,12.0,35.0,3.6,150,["Deloitte","EY","TCS","Wipro"],["MBA"],{CAT:78}],
+["IIM Sirmaur","IIM Sirmaur","Sirmaur","Himachal Pradesh","GOVERNMENT",2015,250,"B+",1200000,78,11.0,32.0,3.5,120,["Deloitte","TCS","Wipro"],["MBA"],{CAT:75}],
+["Madras Medical College","MMC","Chennai","Tamil Nadu","GOVERNMENT",1835,2000,"A++",18000,94,9.5,20.0,4.5,1000,["Rajiv Gandhi Hospital","Apollo","Fortis"],["MBBS","MD","MS"],{NEET:400}],
+["Seth GS Medical College","GSMC","Mumbai","Maharashtra","GOVERNMENT",1926,1800,"A+",22000,93,9.0,19.0,4.4,900,["KEM Hospital","Hinduja","Lilavati"],["MBBS","MD","MS"],{NEET:600}],
+["Lady Hardinge Medical College","LHMC","New Delhi","Delhi","GOVERNMENT",1916,1200,"A+",15000,92,8.5,18.0,4.3,700,["LHMC Hospital","AIIMS","Safdarjung"],["MBBS","MD"],{NEET:700}],
+["Stanley Medical College","Stanley","Chennai","Tamil Nadu","GOVERNMENT",1838,1500,"A",16000,88,8.0,16.0,4.1,600,["Stanley Hospital","Apollo","MIOT"],["MBBS","MD"],{NEET:1200}],
+["Bangalore Medical College","BMC","Bangalore","Karnataka","GOVERNMENT",1955,1800,"A+",25000,90,8.5,17.0,4.2,800,["Victoria Hospital","Apollo","Manipal"],["MBBS","MD","MS"],{NEET:900}],
+["NLU Delhi","NLU Delhi","New Delhi","Delhi","GOVERNMENT",2008,800,"A+",280000,92,14.0,42.0,4.5,400,["AZB","Trilegal","Cyril Amarchand","Shardul"],["LLB","LLM"],{}],
+["NLU Jodhpur","NLUJ","Jodhpur","Rajasthan","GOVERNMENT",1999,700,"A",220000,85,10.0,35.0,4.2,350,["AZB","Trilegal","Khaitan","L&L"],["LLB","LLM"],{}],
+["GNLU Gandhinagar","GNLU","Gandhinagar","Gujarat","GOVERNMENT",2003,650,"A",200000,82,9.0,30.0,4.0,300,["AZB","Trilegal","Cyril Amarchand"],["LLB","LLM"],{}],
+["NUJS Kolkata","NUJS","Kolkata","West Bengal","GOVERNMENT",1999,750,"A+",240000,88,11.0,38.0,4.3,380,["AZB","Trilegal","S&R","Khaitan"],["LLB","LLM"],{}],
+["RGNUL Patiala","RGNUL","Patiala","Punjab","GOVERNMENT",2006,500,"B++",160000,75,7.0,22.0,3.7,250,["Trilegal","HSA","Luthra"],["LLB","LLM"],{}],
+["SRM AP","SRM AP","Amaravati","Andhra Pradesh","PRIVATE",2017,5000,"A",280000,72,5.5,22.0,3.6,500,["TCS","Infosys","Amazon","Wipro"],["B.Tech","M.Tech","BBA"],{JEE_MAIN:35000}],
+["Jain University","Jain","Bangalore","Karnataka","PRIVATE",1990,12000,"A+",180000,74,5.5,22.0,3.8,1500,["TCS","Infosys","Wipro","Cognizant"],["B.Tech","BBA","MBA","B.Com","B.Sc"],{JEE_MAIN:38000}],
+["UPES Dehradun","UPES","Dehradun","Uttarakhand","PRIVATE",2003,10000,"A",280000,75,6.0,25.0,3.7,1200,["Shell","ONGC","TCS","Infosys"],["B.Tech","MBA","BBA","LLB"],{JEE_MAIN:32000}],
+["KLE Technological University","KLE Tech","Hubballi","Karnataka","PRIVATE",1947,5000,"A",150000,78,6.5,26.0,3.9,800,["TCS","Infosys","Wipro","Bosch"],["B.Tech","M.Tech"],{JEE_MAIN:28000}],
+["Dhirubhai Ambani Institute","DAIICT","Gandhinagar","Gujarat","PRIVATE",2001,3000,"A",250000,85,9.5,40.0,4.1,600,["Google","Microsoft","Amazon","TCS"],["B.Tech","M.Tech"],{JEE_MAIN:12000}],
+["RVCE Bangalore","RVCE","Bangalore","Karnataka","PRIVATE",1963,4500,"A+",200000,82,7.5,30.0,4.1,900,["Infosys","TCS","Bosch","Samsung"],["B.Tech","M.Tech"],{JEE_MAIN:16000}],
+["BMS College of Engineering","BMSCE","Bangalore","Karnataka","PRIVATE",1946,4000,"A",180000,80,7.0,28.0,4.0,800,["TCS","Infosys","Wipro","Bosch"],["B.Tech","M.Tech"],{JEE_MAIN:18000}],
+["MS Ramaiah Institute","MSRIT","Bangalore","Karnataka","PRIVATE",1962,4200,"A",190000,79,6.8,27.0,3.9,850,["TCS","Infosys","Wipro","Samsung"],["B.Tech","M.Tech"],{JEE_MAIN:20000}],
+["PES University","PES","Bangalore","Karnataka","PRIVATE",1972,8000,"A+",300000,82,8.0,35.0,4.1,1200,["Google","Microsoft","Amazon","SAP"],["B.Tech","M.Tech","MBA"],{JEE_MAIN:14000}],
+["IIITDM Kancheepuram","IIITDM","Kancheepuram","Tamil Nadu","GOVERNMENT",2007,2000,"A",180000,82,8.0,32.0,4.0,500,["TCS","Amazon","Samsung","Google"],["B.Tech","M.Tech","PhD"],{JEE_MAIN:10000}],
+["NIT Puducherry","NIT Puducherry","Karaikal","Puducherry","GOVERNMENT",2010,1500,"B+",118000,65,5.0,16.0,3.3,350,["TCS","Infosys","Wipro"],["B.Tech"],{JEE_MAIN:42000}],
+["NIT Andhra Pradesh","NIT AP","Tadepalligudem","Andhra Pradesh","GOVERNMENT",2015,1200,"B+",115000,63,4.8,15.0,3.2,280,["TCS","Infosys","Wipro"],["B.Tech"],{JEE_MAIN:44000}],
+["NIT Delhi","NIT Delhi","New Delhi","Delhi","GOVERNMENT",2010,1800,"A",155000,80,7.5,28.0,3.9,400,["TCS","Amazon","Microsoft","Wipro"],["B.Tech","M.Tech"],{JEE_MAIN:15000}],
+["Cochin University","CUSAT","Kochi","Kerala","GOVERNMENT",1971,6000,"A+",45000,78,6.0,24.0,4.0,1000,["TCS","Infosys","UST Global","Wipro"],["B.Tech","M.Tech","MBA","LLB"],{JEE_MAIN:22000}],
+["Visvesvaraya Technological University","VTU","Belgaum","Karnataka","GOVERNMENT",1998,15000,"A+",40000,72,5.0,20.0,3.8,2000,["TCS","Infosys","Wipro","HCL"],["B.Tech","M.Tech"],{JEE_MAIN:30000}],
+["Gujarat Technological University","GTU","Ahmedabad","Gujarat","GOVERNMENT",2007,20000,"A",35000,68,4.5,16.0,3.6,2500,["TCS","Infosys","Wipro","Adani"],["B.Tech","MBA","BBA"],{JEE_MAIN:35000}],
+["JNTU Hyderabad","JNTU","Hyderabad","Telangana","GOVERNMENT",1972,12000,"A",30000,70,5.0,18.0,3.7,1800,["TCS","Infosys","Wipro","Tech Mahindra"],["B.Tech","M.Tech","MBA","PhD"],{JEE_MAIN:32000}],
+["Rajasthan Technical University","RTU","Kota","Rajasthan","GOVERNMENT",2006,8000,"B++",35000,65,4.2,14.0,3.5,1200,["TCS","Infosys","Wipro"],["B.Tech","M.Tech"],{JEE_MAIN:40000}],
+["Punjab Technical University","PTU","Jalandhar","Punjab","GOVERNMENT",1997,10000,"B++",40000,62,4.0,13.0,3.4,1500,["TCS","Infosys","Wipro","HCL"],["B.Tech","MBA"],{JEE_MAIN:42000}],
+["Siksha O Anusandhan","SOA","Bhubaneswar","Odisha","PRIVATE",1996,10000,"A+",250000,78,6.5,26.0,3.9,1500,["TCS","Infosys","Wipro","Cognizant"],["B.Tech","MBBS","MBA","BBA"],{JEE_MAIN:30000,NEET:8000}],
+["Kalasalingam University","KARE","Virudhunagar","Tamil Nadu","PRIVATE",1984,5000,"A",150000,72,5.0,20.0,3.6,600,["TCS","Infosys","Wipro","Cognizant"],["B.Tech","M.Tech"],{JEE_MAIN:40000}],
+["Vel Tech University","Vel Tech","Chennai","Tamil Nadu","PRIVATE",1997,8000,"A+",180000,70,5.0,20.0,3.5,800,["TCS","Infosys","Wipro","HCL"],["B.Tech","M.Tech","MBA"],{JEE_MAIN:38000}],
+["Sathyabama Institute","Sathyabama","Chennai","Tamil Nadu","PRIVATE",1987,12000,"A+",200000,75,5.5,22.0,3.7,1200,["TCS","Infosys","Wipro","Cognizant"],["B.Tech","M.Tech","MBA"],{JEE_MAIN:32000}],
+["Hindustan University","HITS","Chennai","Tamil Nadu","PRIVATE",1985,10000,"A",220000,72,5.2,20.0,3.6,900,["TCS","Infosys","Wipro","HCL"],["B.Tech","M.Tech","MBA"],{JEE_MAIN:35000}],
+["Saveetha University","Saveetha","Chennai","Tamil Nadu","PRIVATE",1988,8000,"A+",800000,82,7.0,18.0,4.0,1200,["Saveetha Hospital","Apollo","Fortis"],["MBBS","MD","BBA","B.Tech"],{NEET:5000}],
+["St Johns College","St Johns","Agra","Uttar Pradesh","PRIVATE",1850,4000,"B++",25000,60,3.5,10.0,3.3,500,["TCS","Wipro","Local firms"],["B.A","B.Sc","B.Com"],{}],
+["Banasthali Vidyapith","Banasthali","Tonk","Rajasthan","PRIVATE",1935,6000,"A++",120000,72,5.0,18.0,3.9,800,["TCS","Infosys","Wipro","Adobe"],["B.Tech","MBA","B.Sc","B.A","PhD"],{JEE_MAIN:35000}],
+["LNMIIT Jaipur","LNMIIT","Jaipur","Rajasthan","PRIVATE",2003,2500,"A",350000,82,8.0,32.0,4.0,500,["Google","Amazon","Microsoft","TCS"],["B.Tech","M.Tech"],{JEE_MAIN:15000}],
+["IIIT Kottayam","IIIT Kottayam","Kottayam","Kerala","GOVERNMENT",2000,1500,"A",160000,78,7.0,28.0,3.8,350,["TCS","Infosys","UST Global","Oracle"],["B.Tech","M.Tech"],{JEE_MAIN:12000}],
+["IIIT Gwalior","ABV-IIITM","Gwalior","Madhya Pradesh","GOVERNMENT",1997,2500,"A+",200000,84,9.0,38.0,4.1,600,["Google","Microsoft","Amazon","TCS"],["B.Tech","M.Tech","PhD"],{JEE_MAIN:6000}],
+["IIIT Jabalpur","IIIT Jabalpur","Jabalpur","Madhya Pradesh","GOVERNMENT",2005,1800,"A",170000,78,7.0,26.0,3.8,400,["TCS","Infosys","Amazon","Wipro"],["B.Tech","M.Tech"],{JEE_MAIN:14000}],
+["IIIT Sri City","IIIT Sri City","Sri City","Andhra Pradesh","GOVERNMENT",2013,1200,"B++",200000,75,7.5,28.0,3.7,250,["Google","Amazon","TCS","Microsoft"],["B.Tech"],{JEE_MAIN:10000}],
+["Calcutta University","CU Kolkata","Kolkata","West Bengal","GOVERNMENT",1857,8000,"A",10000,68,4.0,12.0,3.8,1500,["TCS","Cognizant","Wipro","Deloitte"],["B.A","B.Sc","B.Com","M.A","M.Sc","PhD"],{}],
+["Madras University","Madras Univ","Chennai","Tamil Nadu","GOVERNMENT",1857,6000,"A+",12000,70,4.2,14.0,3.9,1200,["TCS","Infosys","Wipro","Cognizant"],["B.A","B.Sc","B.Com","MBA","PhD"],{}],
+["Mysore University","Mysore Univ","Mysore","Karnataka","GOVERNMENT",1916,5000,"A+",10000,68,4.0,12.0,3.7,1000,["TCS","Infosys","Wipro"],["B.A","B.Sc","B.Com","M.Sc","PhD"],{}],
+["Andhra University","AU","Visakhapatnam","Andhra Pradesh","GOVERNMENT",1926,7000,"A",15000,70,4.5,15.0,3.8,1200,["TCS","Infosys","Wipro","Tech Mahindra"],["B.Tech","B.Sc","MBA","LLB"],{JEE_MAIN:38000}],
+["Patna University","Patna Univ","Patna","Bihar","GOVERNMENT",1917,5000,"B++",8000,60,3.5,10.0,3.4,800,["TCS","Infosys","Local firms"],["B.A","B.Sc","B.Com","LLB"],{}],
+["Gauhati University","GU","Guwahati","Assam","GOVERNMENT",1948,5500,"A",12000,65,4.0,12.0,3.6,900,["TCS","Infosys","Wipro","Oil India"],["B.A","B.Sc","B.Com","MBA","LLB"],{}],
+["Dibrugarh University","DU Dibrugarh","Dibrugarh","Assam","GOVERNMENT",1965,4000,"B++",10000,62,3.8,11.0,3.5,700,["TCS","Oil India","ONGC"],["B.A","B.Sc","B.Tech","MBA"],{}],
+["Tezpur University","Tezpur","Tezpur","Assam","GOVERNMENT",1994,3500,"A",25000,72,5.0,18.0,3.8,600,["TCS","Infosys","ONGC","Oil India"],["B.Tech","B.Sc","MBA","M.Tech"],{JEE_MAIN:35000}],
+["Central University of Kerala","CU Kerala","Kasaragod","Kerala","GOVERNMENT",2009,2000,"A",15000,68,4.5,14.0,3.6,400,["TCS","Infosys","UST Global"],["B.A","B.Sc","M.A","M.Sc"],{}],
+["Central University of Rajasthan","CURAJ","Ajmer","Rajasthan","GOVERNMENT",2009,2500,"A",18000,65,4.2,13.0,3.5,500,["TCS","Infosys","Wipro"],["B.Tech","B.Sc","MBA","M.Sc"],{JEE_MAIN:42000}],
+["Central University of Haryana","CUH","Mahendragarh","Haryana","GOVERNMENT",2009,2000,"B++",15000,62,3.8,11.0,3.3,400,["TCS","Infosys","HCL"],["B.A","B.Sc","B.Tech","MBA"],{JEE_MAIN:48000}],
+["Central University of Punjab","CUP","Bathinda","Punjab","GOVERNMENT",2009,1800,"A",16000,64,4.0,12.0,3.4,350,["TCS","Infosys","Wipro"],["B.Sc","M.Sc","MBA","PhD"],{}],
+["Central University of Tamil Nadu","CUTN","Thiruvarur","Tamil Nadu","GOVERNMENT",2009,1500,"B++",12000,60,3.5,10.0,3.2,300,["TCS","Infosys"],["B.A","B.Sc","M.A","M.Sc"],{}],
+["Pondicherry University","PU","Puducherry","Puducherry","GOVERNMENT",1985,4000,"A+",20000,72,5.0,18.0,3.9,800,["TCS","Infosys","Wipro","Cognizant"],["B.Tech","B.Sc","MBA","M.Tech","PhD"],{JEE_MAIN:30000}],
+["North Eastern Hill University","NEHU","Shillong","Meghalaya","GOVERNMENT",1973,3000,"A",12000,62,3.8,11.0,3.5,500,["TCS","Infosys","Government jobs"],["B.A","B.Sc","M.Sc","PhD"],{}],
+["Tripura University","TU","Agartala","Tripura","GOVERNMENT",1987,2500,"B++",8000,58,3.2,9.0,3.2,400,["TCS","Infosys","Government jobs"],["B.A","B.Sc","M.Sc"],{}],
+["Mizoram University","MZU","Aizawl","Mizoram","GOVERNMENT",2001,2000,"A",10000,60,3.5,10.0,3.3,350,["Government sector","TCS"],["B.A","B.Sc","M.Sc","MBA"],{}],
+["Nagaland University","NU","Lumami","Nagaland","GOVERNMENT",1994,1800,"B+",8000,55,3.0,8.0,3.1,300,["Government sector"],["B.A","B.Sc","M.A"],{}],
+["Sikkim University","SU","Gangtok","Sikkim","GOVERNMENT",2007,1500,"B+",10000,58,3.2,9.0,3.2,250,["Government sector","TCS"],["B.A","B.Sc","M.Sc","MBA"],{}],
+["Rajiv Gandhi University","RGU","Itanagar","Arunachal Pradesh","GOVERNMENT",1984,2000,"B++",8000,55,3.0,8.5,3.1,350,["Government sector"],["B.A","B.Sc","M.A","LLB"],{}],
+["Manipur University","MU","Imphal","Manipur","GOVERNMENT",1980,2500,"B++",10000,58,3.2,9.0,3.3,400,["Government sector","TCS"],["B.A","B.Sc","M.Sc","MBA"],{}],
+["GITAM University","GITAM","Visakhapatnam","Andhra Pradesh","PRIVATE",1980,10000,"A+",250000,78,6.0,25.0,3.9,1500,["TCS","Infosys","Wipro","Amazon"],["B.Tech","MBA","BBA","B.Sc"],{JEE_MAIN:28000}],
+["Centurion University","Centurion","Bhubaneswar","Odisha","PRIVATE",2005,6000,"A",180000,68,4.5,16.0,3.5,700,["TCS","Infosys","Wipro"],["B.Tech","MBA","BBA"],{JEE_MAIN:40000}],
+["GD Goenka University","GD Goenka","Gurgaon","Haryana","PRIVATE",2013,4000,"B++",350000,65,5.0,18.0,3.3,400,["Deloitte","EY","TCS","Wipro"],["B.Tech","BBA","MBA","LLB"],{JEE_MAIN:50000}],
+["OP Jindal University","JGU","Sonipat","Haryana","PRIVATE",2009,5000,"A+",500000,80,8.0,32.0,4.0,700,["McKinsey","Deloitte","EY","Goldman Sachs"],["BBA","MBA","LLB","B.A"],{CAT:82}],
+["Chitkara University","Chitkara","Rajpura","Punjab","PRIVATE",2002,8000,"A+",250000,76,6.0,24.0,3.8,1000,["TCS","Infosys","Wipro","Amazon"],["B.Tech","MBA","BBA"],{JEE_MAIN:30000}],
+["Graphic Era University","GEU","Dehradun","Uttarakhand","PRIVATE",1993,7000,"A",200000,72,5.0,20.0,3.6,800,["TCS","Infosys","Wipro","HCL"],["B.Tech","MBA","BBA","B.Sc"],{JEE_MAIN:35000}],
+["DIT University","DIT","Dehradun","Uttarakhand","PRIVATE",1998,5000,"A",180000,70,4.8,18.0,3.5,600,["TCS","Infosys","Wipro"],["B.Tech","MBA","BBA"],{JEE_MAIN:38000}],
+["Galgotias University","Galgotias","Greater Noida","Uttar Pradesh","PRIVATE",2011,15000,"A",200000,68,4.5,16.0,3.4,1800,["TCS","Infosys","Wipro","HCL"],["B.Tech","MBA","BBA","LLB"],{JEE_MAIN:42000}],
+["Nirma University","Nirma","Ahmedabad","Gujarat","PRIVATE",2003,8000,"A+",250000,82,7.5,30.0,4.0,1200,["TCS","Infosys","Amazon","L&T"],["B.Tech","MBA","LLB","B.Sc"],{JEE_MAIN:18000,CAT:85}],
+["DA-IICT Gandhinagar","DA-IICT","Gandhinagar","Gujarat","PRIVATE",2001,2500,"A",280000,84,9.0,38.0,4.1,500,["Google","Amazon","Microsoft","TCS"],["B.Tech","M.Tech"],{JEE_MAIN:12000}],
+["ICT Mumbai","ICT","Mumbai","Maharashtra","GOVERNMENT",1933,3000,"A++",60000,90,10.0,45.0,4.4,800,["Reliance","BASF","TATA Chemicals","UPL"],["B.Tech","M.Tech","PhD"],{JEE_MAIN:5000}],
+["IISER Pune","IISER Pune","Pune","Maharashtra","GOVERNMENT",2006,2000,"A++",40000,85,10.0,40.0,4.5,500,["Research labs","Google","Microsoft","Academia"],["B.Sc","M.Sc","PhD"],{}],
+["IISER Kolkata","IISER Kolkata","Kolkata","West Bengal","GOVERNMENT",2006,1800,"A+",35000,82,9.0,35.0,4.3,450,["Research labs","Google","Academia"],["B.Sc","M.Sc","PhD"],{}],
+["IISER Mohali","IISER Mohali","Mohali","Punjab","GOVERNMENT",2007,1500,"A+",38000,80,8.5,32.0,4.2,400,["Research labs","Microsoft","Academia"],["B.Sc","M.Sc","PhD"],{}],
+["NISER Bhubaneswar","NISER","Bhubaneswar","Odisha","GOVERNMENT",2007,1200,"A+",30000,82,9.0,35.0,4.3,300,["Research labs","BARC","ISRO","Google"],["B.Sc","M.Sc","PhD"],{}],
 ];
 
 function buildCollege(d: any[]) {
@@ -85,11 +233,24 @@ function buildCollege(d: any[]) {
   };
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const force = searchParams.get('force') === 'true';
+
     const existing = await prisma.college.count();
-    if (existing > 0) {
-      return NextResponse.json({ message: `Database already has ${existing} colleges. Skipping seed.` });
+
+    if (existing > 0 && !force) {
+      return NextResponse.json({ message: `Database already has ${existing} colleges. Use ?force=true to reseed.`, count: existing });
+    }
+
+    if (force && existing > 0) {
+      // Delete all related data first to avoid FK constraints
+      await prisma.answer.deleteMany({});
+      await prisma.question.deleteMany({});
+      await prisma.savedCollege.deleteMany({});
+      await prisma.savedComparison.deleteMany({});
+      await prisma.college.deleteMany({});
     }
 
     let count = 0;
@@ -97,9 +258,10 @@ export async function GET() {
       await prisma.college.create({ data: buildCollege(c) });
       count++;
     }
-    return NextResponse.json({ success: true, message: `Seeded ${count} colleges!` });
+    return NextResponse.json({ success: true, message: `Seeded ${count} colleges!`, count });
   } catch (error: any) {
     console.error('Seed error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+

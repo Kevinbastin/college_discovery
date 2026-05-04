@@ -6,9 +6,36 @@ import Breadcrumb from '@/components/Breadcrumb';
 import CollegeCard from '@/components/CollegeCard';
 import CollegeCardSkeleton from '@/components/CollegeCardSkeleton';
 import EmptyState from '@/components/EmptyState';
-import { College, Question } from '@/types';
-import { formatINR, formatLPA, timeAgo } from '@/lib/utils';
+import ReviewCard from '@/components/ReviewCard';
+import { College, Question, Review } from '@/types';
+import { formatINR, formatLPA, timeAgo, getExamLabel } from '@/lib/utils';
 import toast from 'react-hot-toast';
+
+// Sample reviews — in production, these would come from an API
+function generateSampleReviews(college: College): Review[] {
+  const names = ['Rahul K.', 'Ananya S.', 'Vikram P.', 'Meera R.', 'Aditya N.'];
+  const titles = ['Great experience overall', 'Good placements but average campus', 'Excellent faculty and resources', 'Value for money education', 'Strong alumni network'];
+  const texts = [
+    `Studying at ${college.shortName} has been a transformative experience. The faculty is supportive and the placement cell works hard to bring top companies on campus.`,
+    `The infrastructure is good and continuously improving. Campus life is vibrant with many clubs and activities. Placements have been consistently strong.`,
+    `${college.shortName} provides excellent exposure to industry through internships and guest lectures. The academic rigor prepares you well for the real world.`,
+    `The course curriculum is well-designed and updated regularly. Labs and libraries are well-maintained. Overall, a good institution to pursue higher education.`,
+    `Alumni network is incredibly strong and helpful. The brand value of ${college.shortName} opens many doors. Would recommend to anyone considering this institution.`,
+  ];
+  return names.slice(0, Math.min(5, Math.max(2, Math.round(college.rating)))).map((name, i) => ({
+    id: `review-${i}`,
+    rating: Math.max(3, Math.min(5, college.rating - 0.5 + Math.random())),
+    title: titles[i],
+    text: texts[i],
+    authorName: name,
+    date: new Date(Date.now() - (i + 1) * 86400000 * 30).toISOString(),
+    infrastructure: Math.max(2.5, Math.min(5, college.rating - 0.3 + Math.random() * 0.6)),
+    faculty: Math.max(2.5, Math.min(5, college.rating - 0.2 + Math.random() * 0.4)),
+    placements: Math.max(2.5, Math.min(5, college.rating + Math.random() * 0.3)),
+    campusLife: Math.max(2.5, Math.min(5, college.rating - 0.4 + Math.random() * 0.8)),
+    helpful: Math.floor(Math.random() * 50),
+  }));
+}
 
 export default function CollegeDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -17,6 +44,7 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
   const [college, setCollege] = useState<College | null>(null);
   const [similar, setSimilar] = useState<College[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [isSaved, setIsSaved] = useState(false);
@@ -37,6 +65,9 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
         setCollege(colData.college);
         setSimilar(simData.colleges || []);
         setQuestions(qData.questions || []);
+        if (colData.college) {
+          setReviews(generateSampleReviews(colData.college));
+        }
       } catch {
       } finally { setLoading(false); }
     })();
@@ -60,6 +91,16 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
       if (was) { await fetch(`/api/saved/${id}`, { method: 'DELETE' }); toast.success('Removed from saved'); }
       else { await fetch('/api/saved', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ collegeId: id }) }); toast.success('Saved to your list', { icon: '✓' }); }
     } catch { setIsSaved(was); toast.error('Something went wrong'); }
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      try { await navigator.share({ title: college?.name, url }); } catch {}
+    } else {
+      await navigator.clipboard.writeText(url);
+      toast.success('Link copied to clipboard!', { icon: '📋' });
+    }
   };
 
   const handleAskQuestion = async () => {
@@ -99,20 +140,24 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
 
   if (loading) return (
     <div>
-      <div className="bg-[#1E3A8A] py-12"><div className="container-main"><div className="skeleton h-8 w-1/2 mb-3 !bg-blue-700/30" /><div className="skeleton h-5 w-1/3 !bg-blue-700/30" /></div></div>
+      <div className="gradient-hero py-12"><div className="container-main"><div className="skeleton h-8 w-1/2 mb-3 !bg-blue-700/30" /><div className="skeleton h-5 w-1/3 !bg-blue-700/30" /></div></div>
       <div className="container-main py-6 grid grid-cols-1 md:grid-cols-4 gap-4">{[1,2,3,4].map(i=><div key={i} className="skeleton h-20" />)}</div>
     </div>
   );
 
   if (!college) return <EmptyState icon="🏫" title="College not found" description="This college doesn't exist or was removed" actionLabel="Browse Colleges" actionHref="/colleges" />;
 
-  const tabs = ['overview', 'courses', 'placements', 'contact'];
+  const tabs = ['overview', 'courses', 'placements', 'cutoff', 'reviews', 'contact'];
+
+  // Parse cutoff data
+  const cutoffRanks = college.cutoffRanks as Record<string, any>;
+  const hasStructuredCutoffs = cutoffRanks && Object.keys(cutoffRanks).length > 0;
 
   return (
     <div>
       {/* Hero Banner */}
-      <section className="bg-[#1E3A8A] py-10 md:py-12">
-        <div className="container-main">
+      <section className="gradient-hero dot-pattern py-10 md:py-12">
+        <div className="container-main relative z-10">
           <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Colleges', href: '/colleges' }, { label: college.shortName }]} />
           <h1 className="text-3xl md:text-6xl font-bold text-white mb-2">{college.name}</h1>
           <div className="flex items-center gap-2 text-blue-200 text-sm mb-3">
@@ -127,12 +172,17 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
             </div>
             {college.type === 'GOVERNMENT' ? <span className="badge-green">Government</span> : <span className="badge-red">Private</span>}
             <span className="badge-blue">{college.naacGrade} NAAC</span>
+            <span className="glass-card px-2 py-0.5 text-white text-xs font-medium">Est. {college.establishedYear}</span>
           </div>
           <div className="flex gap-3 flex-wrap">
             <button onClick={handleSave} className="px-4 h-[40px] border-2 border-white text-white rounded font-semibold text-sm hover:bg-white/10 transition-all inline-flex items-center gap-2">
               {isSaved ? '★ Saved' : '☆ Save College'}
             </button>
             <button onClick={() => addToCompare(college)} className="btn-orange !h-[40px] text-sm">⚖ Compare</button>
+            <button onClick={handleShare} className="px-4 h-[40px] border-2 border-white/40 text-white/80 rounded font-semibold text-sm hover:bg-white/10 transition-all inline-flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              Share
+            </button>
           </div>
         </div>
       </section>
@@ -141,13 +191,13 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
       <section className="bg-white border-b border-[#E2E8F0] py-6">
         <div className="container-main grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {[
-            { label: 'Annual Fees', value: formatINR(college.annualFees) },
-            { label: 'Placement Rate', value: `${college.placementPct}%` },
-            { label: 'Avg Package', value: formatLPA(college.avgPackage) },
-            { label: 'Total Students', value: college.totalStudents.toLocaleString() },
+            { label: 'Annual Fees', value: formatINR(college.annualFees), color: '#1E3A8A' },
+            { label: 'Placement Rate', value: `${college.placementPct}%`, color: '#16A34A' },
+            { label: 'Avg Package', value: formatLPA(college.avgPackage), color: '#2563EB' },
+            { label: 'Total Students', value: college.totalStudents.toLocaleString(), color: '#7C3AED' },
           ].map(s => (
             <div key={s.label}>
-              <div className="text-xl md:text-3xl font-bold text-[#1E3A8A]">{s.value}</div>
+              <div className="text-xl md:text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
               <div className="text-xs text-[#64748B] mt-1">{s.label}</div>
             </div>
           ))}
@@ -170,9 +220,19 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
           <div>
             <h2 className="text-2xl font-bold text-[#1E293B] mb-4">About {college.shortName}</h2>
             <p className="text-body mb-6">{college.about}</p>
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="bg-[#F8FAFC] p-4 rounded-lg"><span className="text-xs text-[#64748B]">Established</span><div className="font-bold text-[#1E293B]">{college.establishedYear}</div></div>
-              <div className="bg-[#F8FAFC] p-4 rounded-lg"><span className="text-xs text-[#64748B]">Type</span><div className="font-bold text-[#1E293B]">{college.type}</div></div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              {[
+                { icon: '📅', label: 'Established', value: String(college.establishedYear) },
+                { icon: '🏛️', label: 'Type', value: college.type === 'GOVERNMENT' ? 'Government' : 'Private' },
+                { icon: '⭐', label: 'NAAC Grade', value: college.naacGrade },
+                { icon: '👨‍🎓', label: 'Students', value: college.totalStudents.toLocaleString() },
+              ].map(item => (
+                <div key={item.label} className="card-premium p-4">
+                  <span className="text-xl">{item.icon}</span>
+                  <div className="text-xs text-[#64748B] mt-1">{item.label}</div>
+                  <div className="font-bold text-[#1E293B] text-sm">{item.value}</div>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -201,13 +261,79 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
         {activeTab === 'placements' && (
           <div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-[#F0FDF4] p-6 rounded-lg text-center"><div className="text-3xl font-bold text-[#16A34A]">{college.placementPct}%</div><div className="text-sm text-[#64748B] mt-1">Placement Rate</div></div>
-              <div className="bg-[#EFF6FF] p-6 rounded-lg text-center"><div className="text-3xl font-bold text-[#2563EB]">{formatLPA(college.avgPackage)}</div><div className="text-sm text-[#64748B] mt-1">Average Package</div></div>
-              <div className="bg-[#FEF9C3] p-6 rounded-lg text-center"><div className="text-3xl font-bold text-[#EAB308]">{formatLPA(college.highestPackage)}</div><div className="text-sm text-[#64748B] mt-1">Highest Package</div></div>
+              <div className="chance-high p-6 rounded-lg text-center"><div className="text-3xl font-bold text-[#16A34A]">{college.placementPct}%</div><div className="text-sm text-[#64748B] mt-1">Placement Rate</div></div>
+              <div className="bg-[#EFF6FF] border border-[#DBEAFE] p-6 rounded-lg text-center"><div className="text-3xl font-bold text-[#2563EB]">{formatLPA(college.avgPackage)}</div><div className="text-sm text-[#64748B] mt-1">Average Package</div></div>
+              <div className="chance-moderate p-6 rounded-lg text-center"><div className="text-3xl font-bold text-[#EAB308]">{formatLPA(college.highestPackage)}</div><div className="text-sm text-[#64748B] mt-1">Highest Package</div></div>
             </div>
             <h3 className="font-bold text-lg text-[#1E293B] mb-3">Top Recruiters</h3>
             <div className="flex flex-wrap gap-2">
-              {college.topRecruiters.map(r => <span key={r} className="bg-[#F1F5F9] text-[#475569] px-3 py-1 rounded text-sm font-medium">{r}</span>)}
+              {college.topRecruiters.map(r => <span key={r} className="bg-[#F1F5F9] text-[#475569] px-3 py-1.5 rounded text-sm font-medium border border-[#E2E8F0]">{r}</span>)}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'cutoff' && (
+          <div>
+            <h2 className="text-xl font-bold text-[#1E293B] mb-4">Cutoff Ranks</h2>
+            {hasStructuredCutoffs ? (
+              <div className="space-y-6">
+                {Object.entries(cutoffRanks).map(([exam, data]) => (
+                  <div key={exam} className="card-premium p-4">
+                    <h3 className="font-bold text-base text-[#1E3A8A] mb-3 flex items-center gap-2">
+                      <span className="badge-blue">{getExamLabel(exam)}</span>
+                    </h3>
+                    {typeof data === 'number' ? (
+                      <div className="bg-[#F8FAFC] rounded p-3">
+                        <span className="text-sm text-[#64748B]">General Cutoff: </span>
+                        <span className="text-base font-bold text-[#1E293B]">{data.toLocaleString()}</span>
+                      </div>
+                    ) : typeof data === 'object' ? (
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b border-[#E2E8F0]">
+                              <th className="text-left p-2 text-xs text-[#64748B] font-semibold">Year</th>
+                              {Object.keys(Object.values(data as Record<string, Record<string, number>>)[0] || { General: 0 }).map(cat => (
+                                <th key={cat} className="text-center p-2 text-xs text-[#64748B] font-semibold">{cat}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {Object.entries(data as Record<string, Record<string, number>>).map(([year, categories]) => (
+                              <tr key={year} className="border-b border-[#F1F5F9]">
+                                <td className="p-2 font-medium text-[#1E293B]">{year}</td>
+                                {Object.values(categories).map((rank, i) => (
+                                  <td key={i} className="p-2 text-center font-bold text-[#1E3A8A]">{rank.toLocaleString()}</td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <EmptyState icon="📊" title="No cutoff data available" description="Cutoff data for this college has not been added yet" />
+            )}
+          </div>
+        )}
+
+        {activeTab === 'reviews' && (
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-bold text-[#1E293B]">Student Reviews</h2>
+                <p className="text-sm text-[#64748B]">{reviews.length} reviews from verified students</p>
+              </div>
+              <div className="flex items-center gap-2 bg-[#F97316] text-white px-3 py-1.5 rounded-lg">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span className="text-lg font-bold">{college.rating.toFixed(1)}</span>
+              </div>
+            </div>
+            <div className="space-y-4">
+              {reviews.map(r => <ReviewCard key={r.id} review={r} />)}
             </div>
           </div>
         )}

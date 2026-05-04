@@ -13,6 +13,8 @@ export async function GET(request: Request) {
     const naac = searchParams.get('naac') || '';
     const minRating = searchParams.get('minRating');
     const courses = searchParams.get('courses') || '';
+    const exams = searchParams.get('exams') || '';
+    const established = searchParams.get('established') || '';
     const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
     const sort = searchParams.get('sort') || 'rating';
     const limit = 12;
@@ -33,6 +35,12 @@ export async function GET(request: Request) {
     if (naac) where.naacGrade = { in: naac.split(',') };
     if (minRating) where.rating = { gte: parseFloat(minRating) };
     if (courses) where.courses = { hasSome: courses.split(',') };
+    if (established) {
+      if (established === 'before_1960') where.establishedYear = { lt: 1960 };
+      else if (established === '1960_1990') where.establishedYear = { gte: 1960, lte: 1990 };
+      else if (established === '1990_2010') where.establishedYear = { gte: 1990, lte: 2010 };
+      else if (established === 'after_2010') where.establishedYear = { gt: 2010 };
+    }
 
     const orderBy: Prisma.CollegeOrderByWithRelationInput = 
       sort === 'fees_asc' ? { annualFees: 'asc' } :
