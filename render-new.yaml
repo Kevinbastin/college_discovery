@@ -16,7 +16,7 @@ services:
         value: "c73cc78a9f329ad995473210309137cb61f9d9f5e95617b029a79ac0a78bb00e"
         scoped: false
       - key: NEXTAUTH_URL
-        value: "https://college-finder-frontend-new.vercel.app"
+        value: "https://college-discovery-m25t.onrender.com"
         scoped: false
       - key: NODE_ENV
         value: production
