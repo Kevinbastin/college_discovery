@@ -140,14 +140,12 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
 
   if (loading) return (
     <div>
-      <div className="gradient-hero py-12"><div className="container-main"><div className="skeleton h-8 w-1/2 mb-3 !bg-blue-700/30" /><div className="skeleton h-5 w-1/3 !bg-blue-700/30" /></div></div>
+      <div className="detail-hero py-12"><div className="container-main"><div className="skeleton h-8 w-1/2 mb-3" /><div className="skeleton h-5 w-1/3" /></div></div>
       <div className="container-main py-6 grid grid-cols-1 md:grid-cols-4 gap-4">{[1,2,3,4].map(i=><div key={i} className="skeleton h-20" />)}</div>
     </div>
   );
 
   if (!college) return <EmptyState icon="🏫" title="College not found" description="This college doesn't exist or was removed" actionLabel="Browse Colleges" actionHref="/colleges" />;
-
-  const tabs = ['overview', 'courses', 'placements', 'cutoff', 'reviews', 'contact'];
 
   // Parse cutoff data
   const cutoffRanks = college.cutoffRanks as Record<string, any>;
@@ -156,30 +154,29 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
   return (
     <div>
       {/* Hero Banner */}
-      <section className="gradient-hero dot-pattern py-10 md:py-12">
-        <div className="container-main relative z-10">
+      <section className="detail-hero py-10 md:py-14">
+        <div className="container-main">
           <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Colleges', href: '/colleges' }, { label: college.shortName }]} />
-          <h1 className="text-3xl md:text-6xl font-bold text-white mb-2">{college.name}</h1>
-          <div className="flex items-center gap-2 text-blue-200 text-sm mb-3">
+          <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-2 tracking-tight">{college.name}</h1>
+          <div className="flex items-center gap-2 text-slate-500 text-sm mb-4">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            {college.city}, {college.state}
+            {college.city}, {college.state} · Est. {college.establishedYear}
           </div>
-          <div className="flex items-center gap-3 mb-4 flex-wrap">
-            <div className="flex items-center gap-1">
-              {[1,2,3,4,5].map(i => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill={i <= Math.round(college.rating) ? '#F97316' : '#475569'} stroke={i <= Math.round(college.rating) ? '#F97316' : '#475569'} strokeWidth="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>)}
-              <span className="text-white text-sm font-bold ml-1">{college.rating}</span>
-              <span className="text-blue-200 text-xs">({college.reviewCount} reviews)</span>
+          <div className="flex items-center gap-3 mb-5 flex-wrap">
+            <div className="flex items-center gap-1 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5">
+              {[1,2,3,4,5].map(i => <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill={i <= Math.round(college.rating) ? '#F59E0B' : '#E2E8F0'} stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>)}
+              <span className="text-amber-700 text-sm font-bold ml-1">{college.rating}</span>
+              <span className="text-amber-600/60 text-xs">({college.reviewCount})</span>
             </div>
-            {college.type === 'GOVERNMENT' ? <span className="badge-green">Government</span> : <span className="badge-red">Private</span>}
+            {college.type === 'GOVERNMENT' ? <span className="badge-green">Government</span> : <span className="badge-purple">Private</span>}
             <span className="badge-blue">{college.naacGrade} NAAC</span>
-            <span className="glass-card px-2 py-0.5 text-white text-xs font-medium">Est. {college.establishedYear}</span>
           </div>
           <div className="flex gap-3 flex-wrap">
-            <button onClick={handleSave} className="px-4 h-[40px] border-2 border-white text-white rounded font-semibold text-sm hover:bg-white/10 transition-all inline-flex items-center gap-2">
+            <button onClick={handleSave} className={`px-5 h-[40px] rounded-xl font-semibold text-sm transition-all inline-flex items-center gap-2 ${isSaved ? 'bg-indigo-600 text-white' : 'border-2 border-indigo-300 text-indigo-600 hover:bg-indigo-50'}`}>
               {isSaved ? '★ Saved' : '☆ Save College'}
             </button>
-            <button onClick={() => addToCompare(college)} className="btn-orange !h-[40px] text-sm">⚖ Compare</button>
-            <button onClick={handleShare} className="px-4 h-[40px] border-2 border-white/40 text-white/80 rounded font-semibold text-sm hover:bg-white/10 transition-all inline-flex items-center gap-2">
+            <button onClick={() => addToCompare(college)} className="btn-primary !h-[40px] text-sm">⚖ Compare</button>
+            <button onClick={handleShare} className="px-4 h-[40px] border border-slate-200 text-slate-500 rounded-xl font-semibold text-sm hover:bg-slate-50 transition-all inline-flex items-center gap-2">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
               Share
             </button>
@@ -188,171 +185,216 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
       </section>
 
       {/* Quick Stats */}
-      <section className="bg-white border-b border-[#E2E8F0] py-6">
-        <div className="container-main grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <section className="bg-white border-b border-slate-100 py-6">
+        <div className="container-main grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Annual Fees', value: formatINR(college.annualFees), color: '#1E3A8A' },
-            { label: 'Placement Rate', value: `${college.placementPct}%`, color: '#16A34A' },
-            { label: 'Avg Package', value: formatLPA(college.avgPackage), color: '#2563EB' },
-            { label: 'Total Students', value: college.totalStudents.toLocaleString(), color: '#7C3AED' },
+            { label: 'Annual Fees', value: formatINR(college.annualFees), icon: '💰', bg: 'bg-indigo-50', color: 'text-indigo-700' },
+            { label: 'Placement Rate', value: `${college.placementPct}%`, icon: '📈', bg: 'bg-emerald-50', color: 'text-emerald-700' },
+            { label: 'Avg Package', value: formatLPA(college.avgPackage), icon: '💼', bg: 'bg-blue-50', color: 'text-blue-700' },
+            { label: 'Total Students', value: college.totalStudents.toLocaleString(), icon: '👨‍🎓', bg: 'bg-purple-50', color: 'text-purple-700' },
           ].map(s => (
-            <div key={s.label}>
-              <div className="text-xl md:text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
-              <div className="text-xs text-[#64748B] mt-1">{s.label}</div>
+            <div key={s.label} className={`detail-stat-card ${s.bg} !border-transparent`}>
+              <div className="text-2xl mb-1">{s.icon}</div>
+              <div className={`text-xl md:text-2xl font-black ${s.color}`}>{s.value}</div>
+              <div className="text-xs text-slate-500 mt-1 font-medium">{s.label}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Tabs */}
-      <section className="container-main py-6">
-        <div className="flex border-b border-[#E2E8F0] mb-6 overflow-x-auto scrollbar-hide">
-          {tabs.map(t => (
-            <button key={t} onClick={() => setActiveTab(t)}
-              className={`px-5 py-3 text-sm font-medium capitalize whitespace-nowrap transition-colors ${
-                activeTab === t ? 'text-[#2563EB] border-b-2 border-[#2563EB]' : 'text-[#64748B] hover:text-[#1E293B]'
-              }`}>{t}</button>
-          ))}
-        </div>
+      {/* ===== ALL CONTENT — No Tabs ===== */}
+      <section className="container-main py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Content Column */}
+          <div className="lg:col-span-2 space-y-8">
 
-        {/* Tab Content */}
-        {activeTab === 'overview' && (
-          <div>
-            <h2 className="text-2xl font-bold text-[#1E293B] mb-4">About {college.shortName}</h2>
-            <p className="text-body mb-6">{college.about}</p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              {[
-                { icon: '📅', label: 'Established', value: String(college.establishedYear) },
-                { icon: '🏛️', label: 'Type', value: college.type === 'GOVERNMENT' ? 'Government' : 'Private' },
-                { icon: '⭐', label: 'NAAC Grade', value: college.naacGrade },
-                { icon: '👨‍🎓', label: 'Students', value: college.totalStudents.toLocaleString() },
-              ].map(item => (
-                <div key={item.label} className="card-premium p-4">
-                  <span className="text-xl">{item.icon}</span>
-                  <div className="text-xs text-[#64748B] mt-1">{item.label}</div>
-                  <div className="font-bold text-[#1E293B] text-sm">{item.value}</div>
+            {/* About */}
+            <div className="card-enterprise p-6">
+              <h2 className="text-xl font-black text-slate-800 mb-3 flex items-center gap-2">📖 About {college.shortName}</h2>
+              <p className="text-body leading-relaxed mb-4">{college.about}</p>
+              {college.description && (
+                <div className="bg-slate-50 p-4 rounded-xl border-l-4 border-indigo-500">
+                  <p className="text-sm text-slate-600 italic">"{college.description}"</p>
                 </div>
-              ))}
+              )}
             </div>
-          </div>
-        )}
 
-        {activeTab === 'courses' && (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead><tr className="bg-[#1E3A8A] text-white">
-                <th className="text-left p-3 font-bold text-xs">Course Name</th>
-                <th className="text-left p-3 font-bold text-xs">Duration</th>
-                <th className="text-left p-3 font-bold text-xs">Fees</th>
-              </tr></thead>
-              <tbody>
-                {college.courses.map((c, i) => (
-                  <tr key={c} className={i % 2 === 0 ? 'bg-white' : 'bg-[#F8FAFC]'}>
-                    <td className="p-3 font-medium text-[#1E293B]">{c}</td>
-                    <td className="p-3 text-[#64748B]">{c.includes('PhD') ? '3-5 years' : c.includes('M.') ? '2 years' : '4 years'}</td>
-                    <td className="p-3 text-[#1E3A8A] font-bold">{formatINR(college.annualFees)}/yr</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {activeTab === 'placements' && (
-          <div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="chance-high p-6 rounded-lg text-center"><div className="text-3xl font-bold text-[#16A34A]">{college.placementPct}%</div><div className="text-sm text-[#64748B] mt-1">Placement Rate</div></div>
-              <div className="bg-[#EFF6FF] border border-[#DBEAFE] p-6 rounded-lg text-center"><div className="text-3xl font-bold text-[#2563EB]">{formatLPA(college.avgPackage)}</div><div className="text-sm text-[#64748B] mt-1">Average Package</div></div>
-              <div className="chance-moderate p-6 rounded-lg text-center"><div className="text-3xl font-bold text-[#EAB308]">{formatLPA(college.highestPackage)}</div><div className="text-sm text-[#64748B] mt-1">Highest Package</div></div>
-            </div>
-            <h3 className="font-bold text-lg text-[#1E293B] mb-3">Top Recruiters</h3>
-            <div className="flex flex-wrap gap-2">
-              {college.topRecruiters.map(r => <span key={r} className="bg-[#F1F5F9] text-[#475569] px-3 py-1.5 rounded text-sm font-medium border border-[#E2E8F0]">{r}</span>)}
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'cutoff' && (
-          <div>
-            <h2 className="text-xl font-bold text-[#1E293B] mb-4">Cutoff Ranks</h2>
-            {hasStructuredCutoffs ? (
-              <div className="space-y-6">
-                {Object.entries(cutoffRanks).map(([exam, data]) => (
-                  <div key={exam} className="card-premium p-4">
-                    <h3 className="font-bold text-base text-[#1E3A8A] mb-3 flex items-center gap-2">
-                      <span className="badge-blue">{getExamLabel(exam)}</span>
-                    </h3>
-                    {typeof data === 'number' ? (
-                      <div className="bg-[#F8FAFC] rounded p-3">
-                        <span className="text-sm text-[#64748B]">General Cutoff: </span>
-                        <span className="text-base font-bold text-[#1E293B]">{data.toLocaleString()}</span>
-                      </div>
-                    ) : typeof data === 'object' ? (
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                          <thead>
-                            <tr className="border-b border-[#E2E8F0]">
-                              <th className="text-left p-2 text-xs text-[#64748B] font-semibold">Year</th>
-                              {Object.keys(Object.values(data as Record<string, Record<string, number>>)[0] || { General: 0 }).map(cat => (
-                                <th key={cat} className="text-center p-2 text-xs text-[#64748B] font-semibold">{cat}</th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {Object.entries(data as Record<string, Record<string, number>>).map(([year, categories]) => (
-                              <tr key={year} className="border-b border-[#F1F5F9]">
-                                <td className="p-2 font-medium text-[#1E293B]">{year}</td>
-                                {Object.values(categories).map((rank, i) => (
-                                  <td key={i} className="p-2 text-center font-bold text-[#1E3A8A]">{rank.toLocaleString()}</td>
-                                ))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    ) : null}
+            {/* Campus Facilities */}
+            <div className="card-enterprise p-6">
+              <h2 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">🏫 Campus Facilities</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                {[
+                  { icon: '📚', label: 'Library' },
+                  { icon: '🏀', label: 'Sports' },
+                  { icon: '🏠', label: 'Hostel' },
+                  { icon: '🧪', label: 'Labs' },
+                  { icon: '🌐', label: 'WiFi' },
+                ].map(f => (
+                  <div key={f.label} className="flex flex-col items-center p-3 bg-white border border-slate-100 rounded-xl shadow-sm">
+                    <span className="text-2xl mb-1">{f.icon}</span>
+                    <span className="text-xs font-semibold text-slate-600">{f.label}</span>
                   </div>
                 ))}
               </div>
-            ) : (
-              <EmptyState icon="📊" title="No cutoff data available" description="Cutoff data for this college has not been added yet" />
-            )}
-          </div>
-        )}
+            </div>
 
-        {activeTab === 'reviews' && (
-          <div>
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-xl font-bold text-[#1E293B]">Student Reviews</h2>
-                <p className="text-sm text-[#64748B]">{reviews.length} reviews from verified students</p>
-              </div>
-              <div className="flex items-center gap-2 bg-[#F97316] text-white px-3 py-1.5 rounded-lg">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <span className="text-lg font-bold">{college.rating.toFixed(1)}</span>
+            {/* Key Highlights */}
+            <div className="card-enterprise p-6">
+              <h2 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">✨ Key Highlights</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {[
+                  { icon: '📅', label: 'Established', value: String(college.establishedYear), bg: 'bg-indigo-50' },
+                  { icon: '🏛️', label: 'Type', value: college.type === 'GOVERNMENT' ? 'Government' : 'Private', bg: 'bg-sky-50' },
+                  { icon: '⭐', label: 'NAAC Grade', value: college.naacGrade, bg: 'bg-amber-50' },
+                  { icon: '👨‍🎓', label: 'Total Students', value: college.totalStudents.toLocaleString(), bg: 'bg-purple-50' },
+                  { icon: '💰', label: 'Annual Fees', value: formatINR(college.annualFees), bg: 'bg-emerald-50' },
+                  { icon: '📈', label: 'Placement Rate', value: `${college.placementPct}%`, bg: 'bg-green-50' },
+                  { icon: '💼', label: 'Avg Package', value: formatLPA(college.avgPackage), bg: 'bg-blue-50' },
+                  { icon: '🏆', label: 'Highest Package', value: formatLPA(college.highestPackage), bg: 'bg-rose-50' },
+                ].map(item => (
+                  <div key={item.label} className={`${item.bg} rounded-xl p-3 text-center`}>
+                    <div className="text-2xl mb-1">{item.icon}</div>
+                    <div className="font-bold text-slate-800 text-sm">{item.value}</div>
+                    <div className="text-[11px] text-slate-500 mt-0.5">{item.label}</div>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="space-y-4">
-              {reviews.map(r => <ReviewCard key={r.id} review={r} />)}
+
+            {/* Courses Offered */}
+            <div className="card-enterprise p-6">
+              <h2 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">📚 Courses Offered</h2>
+              <div className="overflow-x-auto rounded-xl border border-slate-200">
+                <table className="w-full text-sm">
+                  <thead><tr className="bg-indigo-600 text-white">
+                    <th className="text-left p-3 font-bold text-xs">Course Name</th>
+                    <th className="text-left p-3 font-bold text-xs">Duration</th>
+                    <th className="text-left p-3 font-bold text-xs">Annual Fees</th>
+                  </tr></thead>
+                  <tbody>
+                    {college.courses.map((c, i) => (
+                      <tr key={c} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                        <td className="p-3 font-semibold text-slate-800">{c}</td>
+                        <td className="p-3 text-slate-500">{c.includes('PhD') ? '3-5 years' : c.includes('M.') || c.includes('MD') || c.includes('MS') || c.includes('MBA') ? '2 years' : '4 years'}</td>
+                        <td className="p-3 text-indigo-700 font-bold">{formatINR(college.annualFees)}/yr</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Placements & Recruiters */}
+            <div className="card-enterprise p-6">
+              <h2 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">💼 Placements & Recruiters</h2>
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-xl text-center">
+                  <div className="text-2xl font-black text-emerald-600">{college.placementPct}%</div>
+                  <div className="text-xs text-slate-500 mt-1 font-medium">Placement Rate</div>
+                </div>
+                <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl text-center">
+                  <div className="text-2xl font-black text-blue-600">{formatLPA(college.avgPackage)}</div>
+                  <div className="text-xs text-slate-500 mt-1 font-medium">Avg Package</div>
+                </div>
+                <div className="bg-amber-50 border border-amber-100 p-4 rounded-xl text-center">
+                  <div className="text-2xl font-black text-amber-600">{formatLPA(college.highestPackage)}</div>
+                  <div className="text-xs text-slate-500 mt-1 font-medium">Highest Package</div>
+                </div>
+              </div>
+              <h3 className="font-bold text-sm text-slate-700 mb-3">Top Recruiters</h3>
+              <div className="flex flex-wrap gap-2">
+                {college.topRecruiters.map(r => <span key={r} className="bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg text-sm font-medium border border-slate-200 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 transition-colors">{r}</span>)}
+              </div>
+            </div>
+
+            {/* Cutoff Ranks */}
+            <div className="card-enterprise p-6">
+              <h2 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">📊 Cutoff Ranks</h2>
+              {hasStructuredCutoffs ? (
+                <div className="space-y-4">
+                  {Object.entries(cutoffRanks).map(([exam, data]) => (
+                    <div key={exam} className="bg-slate-50 rounded-xl p-4">
+                      <h3 className="font-bold text-sm mb-3"><span className="badge-blue">{getExamLabel(exam)}</span></h3>
+                      {typeof data === 'number' ? (
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-slate-500">General Cutoff Rank:</span>
+                          <span className="text-lg font-black text-indigo-700">{data.toLocaleString()}</span>
+                        </div>
+                      ) : typeof data === 'object' ? (
+                        <div className="overflow-x-auto rounded-lg border border-slate-200">
+                          <table className="w-full text-sm">
+                            <thead><tr className="border-b border-slate-200 bg-white">
+                              <th className="text-left p-2 text-xs text-slate-500 font-semibold">Year</th>
+                              {Object.keys(Object.values(data as Record<string, Record<string, number>>)[0] || { General: 0 }).map(cat => (
+                                <th key={cat} className="text-center p-2 text-xs text-slate-500 font-semibold">{cat}</th>
+                              ))}
+                            </tr></thead>
+                            <tbody>
+                              {Object.entries(data as Record<string, Record<string, number>>).map(([year, categories]) => (
+                                <tr key={year} className="border-b border-slate-50">
+                                  <td className="p-2 font-medium text-slate-800">{year}</td>
+                                  {Object.values(categories).map((rank, i) => (
+                                    <td key={i} className="p-2 text-center font-bold text-indigo-700">{rank.toLocaleString()}</td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-slate-400"><span className="text-3xl block mb-2">📊</span>Cutoff data not available yet</div>
+              )}
+            </div>
+
+            {/* Reviews */}
+            <div className="card-enterprise p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-black text-slate-800 flex items-center gap-2">⭐ Student Reviews</h2>
+                <div className="flex items-center gap-1.5 bg-amber-500 text-white px-3 py-1.5 rounded-lg">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <span className="text-sm font-bold">{college.rating.toFixed(1)}</span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {reviews.map(r => <ReviewCard key={r.id} review={r} />)}
+              </div>
             </div>
           </div>
-        )}
 
-        {activeTab === 'contact' && (
-          <div className="space-y-4">
-            {[
-              { icon: '🌐', label: 'Website', value: college.website },
-              { icon: '📞', label: 'Phone', value: college.phone },
-              { icon: '✉️', label: 'Email', value: college.email },
-              { icon: '📍', label: 'Address', value: `${college.city}, ${college.state}` },
-            ].map(c => (
-              <div key={c.label} className="flex items-start gap-3 p-4 bg-[#F8FAFC] rounded-lg">
-                <span className="text-xl">{c.icon}</span>
-                <div><div className="text-xs text-[#64748B]">{c.label}</div><div className="text-sm font-medium text-[#1E293B]">{c.value}</div></div>
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Contact Card */}
+            <div className="detail-sidebar-card sticky top-24">
+              <h3 className="font-bold text-base text-slate-800 mb-4">📞 Contact Information</h3>
+              <div className="space-y-3">
+                {[
+                  { icon: '🌐', label: 'Website', value: college.website },
+                  { icon: '📞', label: 'Phone', value: college.phone },
+                  { icon: '✉️', label: 'Email', value: college.email },
+                  { icon: '📍', label: 'Location', value: `${college.city}, ${college.state}` },
+                ].map(c => (
+                  <div key={c.label} className="flex items-start gap-3 p-3 bg-slate-50 rounded-xl">
+                    <span className="text-lg">{c.icon}</span>
+                    <div className="min-w-0">
+                      <div className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">{c.label}</div>
+                      <div className="text-sm font-medium text-slate-700 break-all">{c.value}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+              <div className="mt-5 space-y-2">
+                <button onClick={handleSave} className={`w-full h-[42px] rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 ${isSaved ? 'bg-indigo-600 text-white' : 'border-2 border-indigo-300 text-indigo-600 hover:bg-indigo-50'}`}>
+                  {isSaved ? '★ Saved' : '☆ Save College'}
+                </button>
+                <button onClick={() => addToCompare(college)} className="btn-primary w-full text-sm">⚖ Add to Compare</button>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
       </section>
 
       {/* Similar Colleges */}
@@ -368,18 +410,18 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
       <section className="container-main py-6 mb-8">
         <div className="flex items-center gap-3 mb-6">
           <h2 className="section-heading">Questions & Answers</h2>
-          <span className="bg-[#E2E8F0] text-[#475569] text-xs font-bold px-2 py-0.5 rounded-full">{questions.length}</span>
+          <span className="bg-slate-200 text-slate-600 text-xs font-bold px-2 py-0.5 rounded-full">{questions.length}</span>
         </div>
 
         {session ? (
-          <div className="mb-6 bg-white p-4 rounded-lg border border-[#E2E8F0]">
+          <div className="mb-6 bg-white p-4 rounded-lg border border-slate-200">
             <textarea value={newQuestion} onChange={e => setNewQuestion(e.target.value)}
               placeholder="Ask a question about this college (min 10 chars)..."
               className="input-field !h-auto min-h-[80px] resize-none mb-3" />
             <button onClick={handleAskQuestion} className="btn-primary text-sm">Ask Question</button>
           </div>
         ) : (
-          <div className="mb-6 p-4 bg-[#FEF9C3] rounded-lg text-sm text-[#92400E]">🔒 Login to ask or answer questions</div>
+          <div className="mb-6 p-4 bg-amber-100 rounded-lg text-sm text-amber-800">🔒 Login to ask or answer questions</div>
         )}
 
         {questions.length === 0 ? (
@@ -387,21 +429,21 @@ export default function CollegeDetailPage({ params }: { params: Promise<{ id: st
         ) : (
           <div className="space-y-3">
             {questions.map(q => (
-              <div key={q.id} className="bg-white rounded-lg border border-[#E2E8F0] p-4">
+              <div key={q.id} className="bg-white rounded-lg border border-slate-200 p-4">
                 <button onClick={() => loadAnswers(q.id)} className="w-full text-left">
-                  <div className="font-medium text-[#1E293B] text-sm mb-1">{q.text}</div>
-                  <div className="flex items-center gap-3 text-xs text-[#94A3B8]">
+                  <div className="font-medium text-slate-800 text-sm mb-1">{q.text}</div>
+                  <div className="flex items-center gap-3 text-xs text-slate-400">
                     <span>{q.user?.name || 'Anonymous'}</span>
                     <span>{timeAgo(q.createdAt)}</span>
                     <span>{q._count?.answers || 0} answers</span>
                   </div>
                 </button>
                 {expandedQ === q.id && (
-                  <div className="mt-4 pl-4 border-l-2 border-[#E2E8F0]">
+                  <div className="mt-4 pl-4 border-l-2 border-slate-200">
                     {(answers[q.id] || []).map((a: any) => (
                       <div key={a.id} className="mb-3">
-                        <p className="text-sm text-[#475569]">{a.text}</p>
-                        <div className="text-xs text-[#94A3B8] mt-1">{a.user?.name} · {timeAgo(a.createdAt)}</div>
+                        <p className="text-sm text-slate-600">{a.text}</p>
+                        <div className="text-xs text-slate-400 mt-1">{a.user?.name} · {timeAgo(a.createdAt)}</div>
                       </div>
                     ))}
                     {session && (

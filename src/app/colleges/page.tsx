@@ -85,9 +85,8 @@ function CollegesContent() {
     (async () => {
       try {
         const api = await import('@/lib/api');
-        const d = await api.apiJson('/api/colleges?page=1&sort=name');
-        const uniqueStates = [...new Set((d.colleges || []).map((c: College) => c.state))].sort() as string[];
-        setStates(uniqueStates);
+        const d = await api.apiJson('/api/colleges?distinct=states');
+        setStates(d.states || []);
       } catch {}
     })();
   }, []);
@@ -125,16 +124,16 @@ function CollegesContent() {
       <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Colleges' }]} />
 
       {/* Search bar */}
-      <div className="relative mb-4">
-        <svg className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <div className="search-premium relative mb-6">
+        <svg className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         <input type="text" value={searchInput} onChange={e => setSearchInput(e.target.value)}
           placeholder="Search colleges, cities, or states..."
-          className="input-field !pl-11 !h-[48px]" />
+          className="w-full h-[52px] pl-14 pr-5 text-base bg-transparent rounded-xl border-0 focus:outline-none text-slate-800 placeholder:text-slate-400" />
       </div>
 
       <div className="flex gap-6">
         {/* Desktop Sidebar */}
-        <div className="hidden lg:block w-[260px] shrink-0">
+        <div className="hidden lg:block w-[270px] shrink-0">
           <FilterSidebar
             values={{ state: filters.state, type: filters.type, minFees: filters.minFees, maxFees: filters.maxFees, naac: filters.naac, minRating: filters.minRating, courses: filters.courses, exams: filters.exams, established: filters.established }}
             onChange={handleFilterChange} onClear={clearFilters} states={states} />
@@ -142,7 +141,7 @@ function CollegesContent() {
 
         {/* Mobile Filter Button */}
         <button onClick={() => setMobileFiltersOpen(true)}
-          className="lg:hidden fixed bottom-4 left-4 z-30 btn-primary shadow-modal flex items-center gap-2">
+          className="lg:hidden fixed bottom-5 left-5 z-30 btn-primary shadow-modal flex items-center gap-2 !rounded-xl">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
           Filters
         </button>
@@ -150,11 +149,13 @@ function CollegesContent() {
         {/* Mobile Filter Sheet */}
         {mobileFiltersOpen && (
           <>
-            <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setMobileFiltersOpen(false)} />
-            <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl max-h-[70vh] overflow-y-auto p-4 lg:hidden animate-slide-up">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold text-lg">Filters</h3>
-                <button onClick={() => setMobileFiltersOpen(false)} className="p-1">✕</button>
+            <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 lg:hidden" onClick={() => setMobileFiltersOpen(false)} />
+            <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl max-h-[75vh] overflow-y-auto p-5 lg:hidden animate-slide-up shadow-modal">
+              <div className="flex justify-between items-center mb-5">
+                <h3 className="font-bold text-lg text-slate-900">Filters</h3>
+                <button onClick={() => setMobileFiltersOpen(false)} className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
               </div>
               <FilterSidebar
                 values={{ state: filters.state, type: filters.type, minFees: filters.minFees, maxFees: filters.maxFees, naac: filters.naac, minRating: filters.minRating, courses: filters.courses, exams: filters.exams, established: filters.established }}
@@ -165,13 +166,15 @@ function CollegesContent() {
 
         {/* Main Content */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-4 gap-3">
-            <span className="text-sm text-[#64748B]">{total} colleges found</span>
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between mb-5 gap-3">
+            <span className="text-sm text-slate-500">
+              <span className="font-semibold text-slate-700">{total}</span> colleges found
+            </span>
+            <div className="flex items-center gap-2.5">
               {/* View toggle */}
-              <div className="hidden md:flex items-center border border-[#E2E8F0] rounded overflow-hidden">
+              <div className="hidden md:flex items-center border border-slate-200 rounded-lg overflow-hidden">
                 <button onClick={() => setViewMode('grid')}
-                  className={`p-2 transition-colors ${viewMode === 'grid' ? 'bg-[#2563EB] text-white' : 'text-[#64748B] hover:bg-[#F1F5F9]'}`}
+                  className={`p-2 transition-all duration-200 ${viewMode === 'grid' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-50 hover:text-slate-600'}`}
                   title="Grid view">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
@@ -179,7 +182,7 @@ function CollegesContent() {
                   </svg>
                 </button>
                 <button onClick={() => setViewMode('list')}
-                  className={`p-2 transition-colors ${viewMode === 'list' ? 'bg-[#2563EB] text-white' : 'text-[#64748B] hover:bg-[#F1F5F9]'}`}
+                  className={`p-2 transition-all duration-200 ${viewMode === 'list' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-50 hover:text-slate-600'}`}
                   title="List view">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
@@ -188,7 +191,7 @@ function CollegesContent() {
               </div>
 
               <select value={filters.sort} onChange={e => updateURL({ sort: e.target.value, page: 1 })}
-                className="input-field !w-auto !h-[36px] text-sm">
+                className="input-field !w-auto !h-[36px] text-sm !rounded-lg">
                 <option value="rating">Rating</option>
                 <option value="fees_asc">Fees Low→High</option>
                 <option value="fees_desc">Fees High→Low</option>

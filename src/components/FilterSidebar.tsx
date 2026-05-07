@@ -78,41 +78,43 @@ export default function FilterSidebar({ values, onChange, onClear, states }: Pro
   };
 
   const Section = ({ id, title, children, count }: { id: string; title: string; children: React.ReactNode; count?: number }) => (
-    <div className="border-b border-[#E2E8F0] py-3">
-      <button onClick={() => toggleSection(id)} className="flex items-center justify-between w-full text-sm font-semibold text-[#1E293B]">
+    <div className="border-b border-slate-100 py-3.5">
+      <button onClick={() => toggleSection(id)} className="flex items-center justify-between w-full text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors">
         <span className="flex items-center gap-2">
           {title}
           {count !== undefined && count > 0 && (
-            <span className="bg-[#2563EB] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{count}</span>
+            <span className="bg-indigo-600 text-white text-[10px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center">{count}</span>
           )}
         </span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-          className={`transition-transform ${openSections[id] ? 'rotate-180' : ''}`}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+          className={`transition-transform duration-200 text-slate-400 ${openSections[id] ? 'rotate-180' : ''}`}>
           <path d="m6 9 6 6 6-6"/>
         </svg>
       </button>
-      {openSections[id] && <div className="mt-3">{children}</div>}
+      <div className={`overflow-hidden transition-all duration-300 ${openSections[id] ? 'mt-3 max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+        {children}
+      </div>
     </div>
   );
 
   return (
-    <div className="bg-white rounded-lg border border-[#E2E8F0] p-4">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1E293B" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-          <span className="font-bold text-sm text-[#1E293B]">Filters</span>
+    <div className="filter-panel">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2.5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          <span className="font-bold text-sm text-slate-800">Filters</span>
           {activeCount > 0 && (
-            <span className="bg-[#2563EB] text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">{activeCount}</span>
+            <span className="bg-indigo-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">{activeCount}</span>
           )}
         </div>
       </div>
 
       {/* Active filter pills */}
       {activeFilters.length > 0 && (
-        <div className="flex flex-wrap gap-1 mb-3 pb-3 border-b border-[#E2E8F0]">
+        <div className="flex flex-wrap gap-1.5 mb-4 pb-4 border-b border-slate-100">
           {activeFilters.map((f, i) => (
             <button key={`${f.key}-${f.value}-${i}`} onClick={() => removeFilter(f.key, f.value)}
-              className="inline-flex items-center gap-1 bg-[#EFF6FF] text-[#2563EB] text-[11px] font-medium px-2 py-1 rounded-full hover:bg-[#DBEAFE] transition-colors">
+              className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-600 text-[11px] font-semibold px-2.5 py-1 rounded-full hover:bg-indigo-100 transition-colors">
               {f.label}
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
             </button>
@@ -122,7 +124,7 @@ export default function FilterSidebar({ values, onChange, onClear, states }: Pro
 
       <Section id="state" title="State / Location" count={values.state ? 1 : 0}>
         <select value={values.state} onChange={e => update({ state: e.target.value })}
-          className="input-field !h-[36px] text-sm">
+          className="input-field !h-[36px] text-sm !rounded-lg">
           <option value="">All States</option>
           {states.map(s => <option key={s} value={s}>{s}</option>)}
         </select>
@@ -130,9 +132,9 @@ export default function FilterSidebar({ values, onChange, onClear, states }: Pro
 
       <Section id="type" title="College Type" count={values.type ? 1 : 0}>
         {['GOVERNMENT', 'PRIVATE'].map(t => (
-          <label key={t} className="flex items-center gap-2 text-sm text-[#475569] mb-1 cursor-pointer">
+          <label key={t} className="flex items-center gap-2.5 text-sm text-slate-600 mb-1.5 cursor-pointer hover:text-slate-800 transition-colors">
             <input type="checkbox" checked={values.type === t} onChange={() => update({ type: values.type === t ? '' : t })}
-              className="w-4 h-4 accent-[#2563EB]" />
+              className="w-4 h-4 rounded" />
             {t === 'GOVERNMENT' ? 'Government' : 'Private'}
           </label>
         ))}
@@ -141,17 +143,17 @@ export default function FilterSidebar({ values, onChange, onClear, states }: Pro
       <Section id="fees" title="Fees Range" count={(values.minFees || values.maxFees) ? 1 : 0}>
         <div className="flex gap-2">
           <input type="number" placeholder="Min ₹" value={values.minFees} onChange={e => update({ minFees: e.target.value })}
-            className="input-field !h-[36px] text-sm flex-1" />
+            className="input-field !h-[36px] text-sm flex-1 !rounded-lg" />
           <input type="number" placeholder="Max ₹" value={values.maxFees} onChange={e => update({ maxFees: e.target.value })}
-            className="input-field !h-[36px] text-sm flex-1" />
+            className="input-field !h-[36px] text-sm flex-1 !rounded-lg" />
         </div>
       </Section>
 
       <Section id="exams" title="Exams Accepted" count={values.exams.length}>
         {EXAM_OPTIONS.map(e => (
-          <label key={e.value} className="flex items-center gap-2 text-sm text-[#475569] mb-1 cursor-pointer">
+          <label key={e.value} className="flex items-center gap-2.5 text-sm text-slate-600 mb-1.5 cursor-pointer hover:text-slate-800 transition-colors">
             <input type="checkbox" checked={values.exams.includes(e.value)} onChange={() => update({ exams: toggleArray(values.exams, e.value) })}
-              className="w-4 h-4 accent-[#2563EB]" />
+              className="w-4 h-4 rounded" />
             {e.label}
           </label>
         ))}
@@ -159,9 +161,9 @@ export default function FilterSidebar({ values, onChange, onClear, states }: Pro
 
       <Section id="naac" title="NAAC Grade" count={values.naac.length}>
         {NAAC_GRADES.map(g => (
-          <label key={g} className="flex items-center gap-2 text-sm text-[#475569] mb-1 cursor-pointer">
+          <label key={g} className="flex items-center gap-2.5 text-sm text-slate-600 mb-1.5 cursor-pointer hover:text-slate-800 transition-colors">
             <input type="checkbox" checked={values.naac.includes(g)} onChange={() => update({ naac: toggleArray(values.naac, g) })}
-              className="w-4 h-4 accent-[#2563EB]" />
+              className="w-4 h-4 rounded" />
             {g}
           </label>
         ))}
@@ -169,10 +171,10 @@ export default function FilterSidebar({ values, onChange, onClear, states }: Pro
 
       <Section id="rating" title="Rating" count={values.minRating ? 1 : 0}>
         {RATING_OPTIONS.map(r => (
-          <label key={r.value} className="flex items-center gap-2 text-sm text-[#475569] mb-1 cursor-pointer">
+          <label key={r.value} className="flex items-center gap-2.5 text-sm text-slate-600 mb-1.5 cursor-pointer hover:text-slate-800 transition-colors">
             <input type="radio" name="rating" checked={values.minRating === r.value}
               onChange={() => update({ minRating: values.minRating === r.value ? '' : r.value })}
-              className="w-4 h-4 accent-[#2563EB]" />
+              className="w-4 h-4" />
             {r.label}
           </label>
         ))}
@@ -180,9 +182,9 @@ export default function FilterSidebar({ values, onChange, onClear, states }: Pro
 
       <Section id="courses" title="Courses Offered" count={values.courses.length}>
         {COURSE_OPTIONS.map(c => (
-          <label key={c} className="flex items-center gap-2 text-sm text-[#475569] mb-1 cursor-pointer">
+          <label key={c} className="flex items-center gap-2.5 text-sm text-slate-600 mb-1.5 cursor-pointer hover:text-slate-800 transition-colors">
             <input type="checkbox" checked={values.courses.includes(c)} onChange={() => update({ courses: toggleArray(values.courses, c) })}
-              className="w-4 h-4 accent-[#2563EB]" />
+              className="w-4 h-4 rounded" />
             {c}
           </label>
         ))}
@@ -190,16 +192,18 @@ export default function FilterSidebar({ values, onChange, onClear, states }: Pro
 
       <Section id="established" title="Established Year" count={values.established ? 1 : 0}>
         {ESTABLISHED_OPTIONS.map(e => (
-          <label key={e.value} className="flex items-center gap-2 text-sm text-[#475569] mb-1 cursor-pointer">
+          <label key={e.value} className="flex items-center gap-2.5 text-sm text-slate-600 mb-1.5 cursor-pointer hover:text-slate-800 transition-colors">
             <input type="radio" name="established" checked={values.established === e.value}
               onChange={() => update({ established: values.established === e.value ? '' : e.value })}
-              className="w-4 h-4 accent-[#2563EB]" />
+              className="w-4 h-4" />
             {e.label}
           </label>
         ))}
       </Section>
 
-      <button onClick={onClear} className="btn-danger text-sm mt-3 w-full text-center">Clear All Filters</button>
+      <button onClick={onClear} className="text-error-600 hover:text-error-700 font-semibold text-sm mt-4 w-full text-center py-2 rounded-lg hover:bg-error-50 transition-colors">
+        Clear All Filters
+      </button>
     </div>
   );
 }

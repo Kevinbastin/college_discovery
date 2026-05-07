@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import CollegeCard from '@/components/CollegeCard';
@@ -9,30 +9,41 @@ import TestimonialCard from '@/components/TestimonialCard';
 import SearchAutocomplete from '@/components/SearchAutocomplete';
 import { College, Testimonial, CategoryCard, TrendingExam } from '@/types';
 
-const quickFilters = ['Engineering', 'Medical', 'Management', 'Law', 'Government', 'Delhi', 'Mumbai', 'Tamil Nadu', 'Karnataka', 'Rajasthan'];
+const quickFilters = [
+  { label: 'Engineering', icon: '⚙️', color: 'from-indigo-500 to-blue-600', bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-200' },
+  { label: 'Medical', icon: '🩺', color: 'from-emerald-500 to-teal-600', bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
+  { label: 'Management', icon: '📊', color: 'from-amber-500 to-orange-600', bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' },
+  { label: 'Law', icon: '⚖️', color: 'from-purple-500 to-violet-600', bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
+  { label: 'Government', icon: '🏛️', color: 'from-sky-500 to-cyan-600', bg: 'bg-sky-50', text: 'text-sky-700', border: 'border-sky-200' },
+  { label: 'Science', icon: '🔬', color: 'from-lime-500 to-green-600', bg: 'bg-lime-50', text: 'text-lime-700', border: 'border-lime-200' },
+  { label: 'Private', icon: '🏢', color: 'from-rose-500 to-pink-600', bg: 'bg-rose-50', text: 'text-rose-700', border: 'border-rose-200' },
+  { label: 'Top Rated', icon: '⭐', color: 'from-yellow-500 to-amber-600', bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200' },
+];
 
 const statsData = [
-  { number: 210, suffix: '+', label: 'Colleges', icon: '🏛️' },
-  { number: 28, suffix: '+', label: 'States Covered', icon: '📍' },
+  { number: 208, suffix: '+', label: 'Verified Colleges', icon: '🏛️' },
+  { number: 32, suffix: '', label: 'States & UTs', icon: '📍' },
   { number: 9, suffix: '', label: 'Course Streams', icon: '📚' },
   { number: 5, suffix: '', label: 'Entrance Exams', icon: '🎓' },
 ];
 
 const categories: CategoryCard[] = [
-  { name: 'Engineering', icon: '⚙️', count: 40, href: '/courses/btech', color: '#EFF6FF' },
-  { name: 'Medical', icon: '🩺', count: 12, href: '/courses/mbbs', color: '#F0FDF4' },
-  { name: 'Management', icon: '📊', count: 20, href: '/courses/mba', color: '#FEF9C3' },
-  { name: 'Law', icon: '⚖️', count: 6, href: '/courses/llb', color: '#F3E8FF' },
-  { name: 'Science', icon: '🔬', count: 15, href: '/courses/bsc', color: '#ECFDF5' },
-  { name: 'Commerce', icon: '💼', count: 10, href: '/courses/bcom', color: '#FFF7ED' },
+  { name: 'Engineering', icon: '⚙️', count: 128, href: '/colleges?courses=B.Tech', color: '#EEF2FF' },
+  { name: 'Medical', icon: '🩺', count: 22, href: '/colleges?courses=MBBS', color: '#ECFDF5' },
+  { name: 'Management', icon: '📊', count: 84, href: '/colleges?courses=MBA', color: '#FFFBEB' },
+  { name: 'Law', icon: '⚖️', count: 18, href: '/colleges?courses=LLB', color: '#F5F3FF' },
+  { name: 'Science', icon: '🔬', count: 45, href: '/colleges?courses=B.Sc', color: '#F0FDF4' },
+  { name: 'Commerce', icon: '💼', count: 30, href: '/colleges?courses=B.Com', color: '#FFF7ED' },
+  { name: 'Arts', icon: '🎨', count: 30, href: '/colleges?courses=B.A', color: '#FFF1F2' },
+  { name: 'Research', icon: '🧬', count: 52, href: '/colleges?courses=PhD', color: '#F0F9FF' },
 ];
 
 const trendingExams: TrendingExam[] = [
-  { name: 'JEE Main 2025', date: 'Jan & Apr 2025', status: 'upcoming', registrationOpen: true },
-  { name: 'NEET UG 2025', date: 'May 2025', status: 'upcoming', registrationOpen: true },
-  { name: 'CAT 2025', date: 'Nov 2025', status: 'upcoming', registrationOpen: false },
-  { name: 'GATE 2025', date: 'Feb 2025', status: 'completed', registrationOpen: false },
-  { name: 'JEE Advanced 2025', date: 'Jun 2025', status: 'upcoming', registrationOpen: false },
+  { name: 'JEE Main 2026', date: 'Jan & Apr 2026', status: 'completed', registrationOpen: false },
+  { name: 'JEE Advanced 2026', date: 'Jun 2026', status: 'upcoming', registrationOpen: true },
+  { name: 'NEET UG 2026', date: 'May 2026', status: 'completed', registrationOpen: false },
+  { name: 'CAT 2026', date: 'Nov 2026', status: 'upcoming', registrationOpen: false },
+  { name: 'GATE 2027', date: 'Feb 2027', status: 'upcoming', registrationOpen: false },
 ];
 
 const testimonials: Testimonial[] = [
@@ -57,17 +68,38 @@ const testimonials: Testimonial[] = [
 ];
 
 const steps = [
-  { icon: '🔍', title: 'Search & Filter', desc: 'Browse 500+ colleges with advanced filters — fees, location, ranking, courses, and exams', color: '#EFF6FF', accent: '#2563EB' },
-  { icon: '⚖️', title: 'Compare & Analyze', desc: 'Compare up to 3 colleges side by side with radar chart visualization and best-value highlights', color: '#F0FDF4', accent: '#16A34A' },
-  { icon: '🎯', title: 'Predict & Decide', desc: 'Enter your exam rank to see matching colleges with High, Moderate, or Low chance indicators', color: '#FEF9C3', accent: '#EAB308' },
+  { icon: '🔍', title: 'Search & Filter', desc: 'Browse 208+ verified colleges with 10+ advanced filters — fees, NAAC grade, location, courses, exams, and more.', color: 'from-indigo-50 to-blue-50', accent: '#4F46E5', iconBg: 'from-indigo-500 to-blue-600' },
+  { icon: '⚖️', title: 'Compare & Analyze', desc: 'Compare up to 3 colleges side-by-side. See fees, placements, packages, and rankings at a glance.', color: 'from-emerald-50 to-teal-50', accent: '#059669', iconBg: 'from-emerald-500 to-teal-600' },
+  { icon: '🎯', title: 'Predict & Decide', desc: 'Enter your exam rank to see matching colleges with High, Moderate, or Low chance indicators instantly.', color: 'from-amber-50 to-orange-50', accent: '#D97706', iconBg: 'from-amber-500 to-orange-600' },
 ];
 
 const whyFeatures = [
-  { icon: '✨', title: 'Zero Ads', desc: 'No popups, no banners — just clean information' },
-  { icon: '⚡', title: 'Lightning Fast', desc: 'Optimized queries for instant filter & search results' },
-  { icon: '📱', title: 'Mobile First', desc: 'Designed for phones first — works beautifully everywhere' },
-  { icon: '🧠', title: 'Decision Focused', desc: 'Every feature helps you make a better college choice' },
+  { icon: '✨', title: 'Ad-Free Experience', desc: 'Zero popups, zero banners, zero sponsored results. Pure information.' },
+  { icon: '⚡', title: 'Blazing Fast', desc: 'Sub-50ms API responses. Instant search, filter, and sort across 208 colleges.' },
+  { icon: '📱', title: 'Mobile First', desc: 'Designed for phones first with bottom-sheet filters and swipe-friendly cards.' },
+  { icon: '🔒', title: 'Verified Data', desc: 'Every college detail cross-verified. NAAC grades, fees, placements — all accurate.' },
 ];
+
+/* Scroll reveal hook */
+function useScrollReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add('revealed'); observer.unobserve(el); } },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  return ref;
+}
+
+function RevealSection({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  const ref = useScrollReveal();
+  return <div ref={ref} className={`reveal ${className}`}>{children}</div>;
+}
 
 export default function HomePage() {
   const [featured, setFeatured] = useState<College[]>([]);
@@ -85,43 +117,58 @@ export default function HomePage() {
     })();
   }, []);
 
-
   const handleQuickFilter = (filter: string) => {
-    const stateFilters = ['Delhi', 'Mumbai', 'Tamil Nadu', 'Karnataka', 'Rajasthan'];
-    if (stateFilters.includes(filter)) router.push(`/colleges?state=${encodeURIComponent(filter)}`);
-    else if (filter === 'Government') router.push('/colleges?type=GOVERNMENT');
+    if (filter === 'Government') router.push('/colleges?type=GOVERNMENT');
+    else if (filter === 'Private') router.push('/colleges?type=PRIVATE');
+    else if (filter === 'Top Rated') router.push('/colleges?minRating=4.5');
     else if (filter === 'Engineering') router.push('/colleges?courses=B.Tech');
     else if (filter === 'Medical') router.push('/colleges?courses=MBBS');
     else if (filter === 'Management') router.push('/colleges?courses=MBA');
     else if (filter === 'Law') router.push('/colleges?courses=LLB');
+    else if (filter === 'Science') router.push('/colleges?courses=B.Sc');
     else router.push(`/colleges?courses=${encodeURIComponent(filter)}`);
   };
 
   return (
-    <div>
+    <div className="overflow-hidden">
       {/* ===== HERO ===== */}
-      <section className="relative overflow-hidden bg-[#EFF6FF] py-20 md:py-28">
-        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top,rgba(37,99,235,0.12),transparent_55%)]" />
-        <div className="container-main text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-white border border-[#DBEAFE] rounded-full px-4 py-1.5 mb-6 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-[#4ADE80] animate-pulse" />
-            <span className="text-xs text-[#1E3A8A] font-medium">Trusted by 10,000+ students across India</span>
+      <section className="hero-ultra relative overflow-hidden">
+        {/* Decorative blobs */}
+        <div className="hero-blob hero-blob-1" />
+        <div className="hero-blob hero-blob-2" />
+        <div className="hero-blob hero-blob-3" />
+        <div className="hero-grid-pattern absolute inset-0 pointer-events-none" />
+
+        <div className="container-main text-center relative z-10 py-20 md:py-28 lg:py-32">
+          {/* Trust badge */}
+          <div className="inline-flex items-center gap-2.5 bg-white/80 backdrop-blur-md border border-indigo-200/60 rounded-full px-5 py-2 mb-8 shadow-lg shadow-indigo-500/5">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+            </span>
+            <span className="text-xs font-bold text-indigo-700 tracking-wide uppercase">Trusted by 10,000+ students</span>
           </div>
 
-          <h1 className="text-4xl md:text-7xl font-bold text-[#0F172A] mb-4 leading-tight">
-            Find Your <span className="text-[#2563EB]">Perfect College</span><br className="hidden md:block" /> in India
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 mb-6 leading-[0.95] tracking-tight">
+            Find Your<br />
+            <span className="hero-text-gradient">Perfect College</span>
           </h1>
-          <p className="text-base md:text-lg text-[#475569] mb-8 max-w-2xl mx-auto">
-            Search from 500+ colleges. Compare fees, placements, and rankings. Make an informed decision — zero ads, zero clutter.
+          <p className="text-lg md:text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
+            Search <span className="text-indigo-600 font-bold">208+ verified colleges</span> across 32 states. Compare fees, placements, and rankings — zero ads, zero clutter.
           </p>
 
-          <SearchAutocomplete className="max-w-xl mx-auto mb-8" />
+          <SearchAutocomplete className="max-w-2xl mx-auto mb-12" />
 
-          <div className="flex flex-wrap justify-center gap-2">
+          {/* Quick Filters — colorful pills */}
+          <div className="flex flex-wrap justify-center gap-2.5 max-w-3xl mx-auto">
             {quickFilters.map(f => (
-              <button key={f} onClick={() => handleQuickFilter(f)}
-                className="px-4 py-2 text-sm font-medium bg-white border border-[#DBEAFE] rounded-full text-[#1E293B] hover:bg-[#F8FAFC] hover:border-[#93C5FD] transition-all duration-200 shadow-sm">
-                {f}
+              <button key={f.label} onClick={() => handleQuickFilter(f.label)}
+                className={`group inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold
+                  ${f.bg} ${f.text} border ${f.border}
+                  hover:shadow-lg hover:shadow-indigo-500/10 hover:-translate-y-0.5
+                  active:scale-95 transition-all duration-200 cursor-pointer`}>
+                <span className="text-base">{f.icon}</span>
+                {f.label}
               </button>
             ))}
           </div>
@@ -129,154 +176,199 @@ export default function HomePage() {
       </section>
 
       {/* ===== ANIMATED STATS ===== */}
-      <StatsCounter stats={statsData} />
+      <RevealSection>
+        <StatsCounter stats={statsData} />
+      </RevealSection>
 
       {/* ===== TOP CATEGORIES ===== */}
-      <section className="py-12 bg-[#F8FAFC]">
-        <div className="container-main">
-          <div className="text-center mb-8">
-            <h2 className="section-heading mb-2">Explore by Category</h2>
-            <p className="text-body">Browse colleges across India&apos;s top academic streams</p>
+      <RevealSection>
+        <section className="py-16 md:py-20">
+          <div className="container-main">
+            <div className="text-center mb-12">
+              <span className="text-label text-indigo-600 mb-2 block">Explore</span>
+              <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight">Browse by Category</h2>
+              <p className="text-base text-slate-500 max-w-lg mx-auto">Discover colleges across India&apos;s most popular academic streams</p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+              {categories.map(cat => (
+                <Link key={cat.name} href={cat.href}
+                  className="category-card-v2 group no-underline" style={{ backgroundColor: cat.color }}>
+                  <div className="text-4xl mb-3 group-hover:scale-125 transition-transform duration-300 ease-out">{cat.icon}</div>
+                  <div className="text-sm font-bold text-slate-800 mb-0.5">{cat.name}</div>
+                  <div className="text-[11px] text-slate-500 font-semibold">{cat.count}+ colleges</div>
+                </Link>
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map(cat => (
-              <Link key={cat.name} href={cat.href}
-                className="card-premium p-5 text-center group no-underline" style={{ backgroundColor: cat.color }}>
-                <div className="text-3xl mb-2 group-hover:scale-110 transition-transform duration-300">{cat.icon}</div>
-                <div className="text-sm font-bold text-[#1E293B] mb-1">{cat.name}</div>
-                <div className="text-xs text-[#64748B]">{cat.count}+ colleges</div>
-              </Link>
-            ))}
-          </div>
-          <div className="text-center mt-6">
-            <Link href="/courses" className="text-sm font-medium text-[#2563EB] hover:underline no-underline">View All Courses →</Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      </RevealSection>
 
       {/* ===== TRENDING EXAMS ===== */}
-      <section className="py-12 bg-white">
-        <div className="container-main">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="section-heading">Trending Exams</h2>
-            <Link href="/exams" className="text-xs text-[#2563EB] font-medium hover:underline no-underline">View All Exams →</Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
-            {trendingExams.map(exam => (
-              <div key={exam.name} className="card-premium p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                    exam.status === 'upcoming' ? 'bg-[#DBEAFE] text-[#2563EB]' :
-                    exam.status === 'ongoing' ? 'bg-[#DCFCE7] text-[#16A34A]' :
-                    'bg-[#F1F5F9] text-[#64748B]'
-                  }`}>
-                    {exam.status === 'upcoming' ? '🔵 Upcoming' : exam.status === 'ongoing' ? '🟢 Ongoing' : '✅ Completed'}
-                  </span>
+      <RevealSection>
+        <section className="py-16 md:py-20 bg-white">
+          <div className="container-main">
+            <div className="flex items-end justify-between mb-10">
+              <div>
+                <span className="text-label text-indigo-600 mb-2 block">Exams</span>
+                <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Trending Entrance Exams</h2>
+              </div>
+              <Link href="/exams" className="text-sm text-indigo-600 font-bold hover:underline no-underline hidden md:block">View All Exams →</Link>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              {trendingExams.map(exam => (
+                <div key={exam.name} className="exam-card group">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className={`exam-status ${
+                      exam.status === 'upcoming' ? 'exam-status-upcoming' :
+                      exam.status === 'ongoing' ? 'exam-status-ongoing' :
+                      'exam-status-completed'
+                    }`}>
+                      {exam.status === 'upcoming' ? 'Upcoming' : exam.status === 'ongoing' ? 'Live' : 'Completed'}
+                    </span>
+                    {exam.registrationOpen && (
+                      <span className="relative flex h-2.5 w-2.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-base font-bold text-slate-800 mb-1.5 group-hover:text-indigo-600 transition-colors">{exam.name}</h3>
+                  <p className="text-sm text-slate-500 font-medium">{exam.date}</p>
                   {exam.registrationOpen && (
-                    <span className="w-2 h-2 rounded-full bg-[#16A34A] animate-pulse" />
+                    <div className="mt-3 inline-flex items-center gap-1.5 text-xs text-emerald-600 font-bold bg-emerald-50 px-2.5 py-1 rounded-full">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      Registration Open
+                    </div>
                   )}
                 </div>
-                <h3 className="text-sm font-bold text-[#1E293B] mb-1">{exam.name}</h3>
-                <p className="text-xs text-[#64748B]">{exam.date}</p>
-                {exam.registrationOpen && (
-                  <p className="text-[10px] text-[#16A34A] font-medium mt-1">Registration Open</p>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </RevealSection>
 
       {/* ===== FEATURED COLLEGES ===== */}
-      <section className="py-12">
-        <div className="container-main">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="section-heading">Top Rated Colleges</h2>
-              <p className="text-sm text-[#64748B] mt-1">Highest-rated institutions based on placements, faculty, and infrastructure</p>
+      <RevealSection>
+        <section className="py-16 md:py-20 bg-gradient-to-b from-slate-50/50 to-white">
+          <div className="container-main">
+            <div className="flex items-end justify-between mb-10">
+              <div>
+                <span className="text-label text-indigo-600 mb-2 block">Featured</span>
+                <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Top Rated Colleges</h2>
+                <p className="text-sm text-slate-500 mt-2">Highest-rated institutions across placements, faculty, and infrastructure</p>
+              </div>
+              <Link href="/colleges" className="text-sm font-bold text-indigo-600 hover:underline no-underline hidden md:block">View All →</Link>
             </div>
-            <Link href="/colleges" className="text-sm font-medium text-[#2563EB] hover:underline no-underline hidden md:block">View All →</Link>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {loading ? Array(6).fill(0).map((_, i) => <CollegeCardSkeleton key={i} />) :
+                featured.map(c => <CollegeCard key={c.id} college={c} />)}
+            </div>
+            <div className="text-center mt-12">
+              <Link href="/colleges" className="btn-primary-lg inline-flex items-center gap-2 no-underline group">
+                Browse All 208+ Colleges
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="group-hover:translate-x-1 transition-transform"><path d="m9 18 6-6-6-6"/></svg>
+              </Link>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading ? Array(6).fill(0).map((_, i) => <CollegeCardSkeleton key={i} />) :
-              featured.map(c => <CollegeCard key={c.id} college={c} />)}
-          </div>
-          <div className="text-center mt-8">
-            <Link href="/colleges" className="btn-primary-lg no-underline">Browse All Colleges</Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      </RevealSection>
 
       {/* ===== HOW IT WORKS ===== */}
-      <section className="py-14 bg-white">
-        <div className="container-main">
-          <div className="text-center mb-10">
-            <h2 className="section-heading mb-2">How It Works</h2>
-            <p className="text-body">Three simple steps to find your perfect college</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {steps.map((s, i) => (
-              <div key={i} className="relative group">
-                <div className="card-premium p-6 text-center h-full" style={{ backgroundColor: s.color }}>
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4 text-3xl group-hover:animate-float" style={{ backgroundColor: `${s.accent}15` }}>
-                    {s.icon}
+      <RevealSection>
+        <section className="py-16 md:py-20 bg-white">
+          <div className="container-main">
+            <div className="text-center mb-14">
+              <span className="text-label text-indigo-600 mb-2 block">How It Works</span>
+              <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight">Three Steps to Your Dream College</h2>
+              <p className="text-base text-slate-500 max-w-lg mx-auto">Our data-driven approach simplifies the most important decision of your career</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {steps.map((s, i) => (
+                <div key={i} className="relative group">
+                  <div className={`step-card-v2 h-full bg-gradient-to-br ${s.color}`}>
+                    {/* Number badge */}
+                    <div className={`absolute -top-4 -left-4 w-10 h-10 rounded-2xl bg-gradient-to-br ${s.iconBg} text-white text-sm font-black flex items-center justify-center shadow-lg z-10`}>
+                      {i + 1}
+                    </div>
+                    {/* Icon */}
+                    <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 text-3xl bg-gradient-to-br ${s.iconBg} bg-opacity-10 group-hover:scale-110 transition-transform duration-300`}
+                      style={{ background: `${s.accent}12` }}>
+                      {s.icon}
+                    </div>
+                    <h3 className="text-xl font-black text-slate-800 mb-3">{s.title}</h3>
+                    <p className="text-sm text-slate-500 leading-relaxed">{s.desc}</p>
                   </div>
-                  <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#1E3A8A] text-white text-sm font-bold flex items-center justify-center shadow-lg">{i + 1}</div>
-                  <h3 className="text-lg font-bold text-[#1E293B] mb-2">{s.title}</h3>
-                  <p className="text-sm text-[#64748B] leading-relaxed">{s.desc}</p>
+                  {/* Connector arrow */}
+                  {i < 2 && (
+                    <div className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white shadow-md items-center justify-center border border-slate-100">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6366F1" strokeWidth="2.5"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                  )}
                 </div>
-                {i < 2 && <div className="hidden md:block absolute right-[-20px] top-1/2 -translate-y-1/2 text-[#CBD5E1] text-2xl z-10">→</div>}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </RevealSection>
 
       {/* ===== WHY COLLEGEFIND ===== */}
-      <section className="py-14 bg-[#F8FAFC]">
-        <div className="container-main">
-          <div className="text-center mb-10">
-            <h2 className="section-heading mb-2">Why CollegeFind?</h2>
-            <p className="text-body">Built different from every other college platform</p>
+      <RevealSection>
+        <section className="py-16 md:py-20 bg-slate-900 relative overflow-hidden">
+          {/* Dark section decorative elements */}
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="container-main relative z-10">
+            <div className="text-center mb-14">
+              <span className="text-label text-indigo-400 mb-2 block">Why Choose Us</span>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">Built Different from Day One</h2>
+              <p className="text-base text-slate-400 max-w-lg mx-auto">Not just another college listing — a decision engine designed for India&apos;s students</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {whyFeatures.map((f, i) => (
+                <div key={i} className="why-card group">
+                  <div className="text-4xl mb-5 group-hover:scale-110 transition-transform duration-300">{f.icon}</div>
+                  <h3 className="text-lg font-bold text-white mb-2">{f.title}</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {whyFeatures.map((f, i) => (
-              <div key={i} className="card-premium p-6 text-center group">
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">{f.icon}</div>
-                <h3 className="text-base font-bold text-[#1E293B] mb-2">{f.title}</h3>
-                <p className="text-sm text-[#64748B]">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      </RevealSection>
 
       {/* ===== TESTIMONIALS ===== */}
-      <section className="py-14 bg-white">
-        <div className="container-main">
-          <div className="text-center mb-10">
-            <h2 className="section-heading mb-2">What Students Say</h2>
-            <p className="text-body">Join thousands of students who found their dream college with us</p>
+      <RevealSection>
+        <section className="py-16 md:py-20 bg-white">
+          <div className="container-main">
+            <div className="text-center mb-14">
+              <span className="text-label text-indigo-600 mb-2 block">Testimonials</span>
+              <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight">What Students Say</h2>
+              <p className="text-base text-slate-500 max-w-lg mx-auto">Join thousands who found their dream college with CollegeFind</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {testimonials.map((t, i) => (
+                <TestimonialCard key={i} testimonial={t} index={i} />
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <TestimonialCard key={i} testimonial={t} index={i} />
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      </RevealSection>
 
       {/* ===== CTA ===== */}
-      <section className="relative overflow-hidden bg-[#DBEAFE] py-16">
-        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(30,58,138,0.12),transparent_60%)]" />
+      <section className="cta-ultra relative overflow-hidden py-20 md:py-24">
+        <div className="cta-blob cta-blob-1" />
+        <div className="cta-blob cta-blob-2" />
         <div className="container-main text-center relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-3">Ready to find your perfect college?</h2>
-          <p className="text-sm text-[#475569] mb-6 max-w-lg mx-auto">
-            Join 10,000+ students already using CollegeFind to make smarter college decisions
+          <h2 className="text-3xl md:text-5xl font-black text-white mb-5 tracking-tight">Ready to find your<br /><span className="cta-text-accent">perfect college?</span></h2>
+          <p className="text-base text-indigo-200 mb-10 max-w-lg mx-auto leading-relaxed">
+            Join 10,000+ students already using CollegeFind to make smarter decisions
           </p>
-          <div className="flex items-center justify-center gap-3 flex-wrap">
-            <Link href="/colleges" className="btn-orange !text-lg no-underline">Browse All Colleges</Link>
-            <Link href="/predictor" className="px-6 h-[48px] inline-flex items-center justify-center border-2 border-[#1E3A8A] text-[#1E3A8A] font-bold rounded hover:bg-[#EFF6FF] transition-all no-underline bg-white">Try College Predictor</Link>
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            <Link href="/colleges" className="cta-btn-primary no-underline">
+              Browse All Colleges
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m9 18 6-6-6-6"/></svg>
+            </Link>
+            <Link href="/predictor" className="cta-btn-secondary no-underline">Try College Predictor</Link>
           </div>
         </div>
       </section>

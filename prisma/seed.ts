@@ -94,23 +94,19 @@ const colleges: any[][] = [
 ];
 
 function buildCollege(d: any[]) {
-  const descriptions: Record<string, string> = {
-    GOVERNMENT: "A prestigious government institution known for academic excellence and research contributions.",
-    PRIVATE: "A leading private institution offering world-class education with industry-focused curriculum."
-  };
-  const type = d[4];
+  const [name, shortName, city, state, type, est, students, naac, fees, placePct, avgPkg, highPkg, rating, count, recruiters, courses, cutoffs] = d;
+  
+  const about = `${name} (${shortName}), established in ${est}, is located in ${city}, ${state}. A prestigious ${type.toLowerCase()} institution known for academic excellence and research contributions. With over ${students.toLocaleString()} students, it offers a vibrant campus life and top-tier infrastructure. The institution has consistently maintained a high NAAC grade of ${naac}, reflecting its commitment to quality education.`;
+
+  const description = `${shortName} is one of India's top ${type === 'GOVERNMENT' ? 'public' : 'private'} institutions. It is renowned for its ${courses.slice(0, 2).join(' and ')} programs. In ${est}, it started its journey and has since become a hub for innovation. The campus in ${city} provides excellent industry exposure, leading to an impressive ${placePct}% placement rate with average packages around ${avgPkg} LPA and reaching up to ${highPkg} LPA. Top recruiters include ${recruiters.slice(0, 3).join(', ')}, and many more global leaders.`;
+
   return {
-    name: d[0], shortName: d[1], city: d[2], state: d[3], type,
-    establishedYear: d[5], totalStudents: d[6], naacGrade: d[7],
-    annualFees: typeof d[8] === 'string' ? parseInt(d[8]) : d[8],
-    placementPct: d[9], avgPackage: d[10], highestPackage: d[11],
-    rating: d[12], reviewCount: d[13], topRecruiters: d[14], courses: d[15],
-    cutoffRanks: d[16],
-    description: `${d[1]} is ${descriptions[type].toLowerCase()}`,
-    about: `${d[0]} (${d[1]}), established in ${d[5]}, is located in ${d[2]}, ${d[3]}. ${descriptions[type]} With a strong placement record of ${d[9]}% and an average package of ₹${d[10]} LPA, the institution has consistently ranked among India's top educational establishments. The campus houses ${d[6].toLocaleString()} students across ${d[15].length} programs, fostering innovation and academic growth.`,
-    website: `https://www.${d[1].toLowerCase().replace(/\s+/g, '')}.ac.in`,
-    phone: `+91-${Math.floor(1000000000 + Math.random() * 9000000000)}`,
-    email: `admissions@${d[1].toLowerCase().replace(/\s+/g, '')}.ac.in`,
+    name, shortName, city, state, type, establishedYear: est, totalStudents: students,
+    naacGrade: naac, annualFees: typeof fees === 'string' ? parseInt(fees) : fees,
+    placementPct: placePct, avgPackage: avgPkg,
+    highestPackage: highPkg, rating, reviewCount: count, topRecruiters: recruiters,
+    courses, cutoffRanks: cutoffs, about, description, website: `https://www.${shortName.toLowerCase().replace(/\s/g, '')}.edu.in`,
+    phone: `+91 ${Math.floor(Math.random() * 9000000000) + 1000000000}`, email: `admissions@${shortName.toLowerCase().replace(/\s/g, '')}.ac.in`
   };
 }
 

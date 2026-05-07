@@ -15,6 +15,7 @@ interface Props {
 function AnimatedNumber({ target, suffix, duration = 2000 }: { target: number; suffix: string; duration?: number }) {
   const [count, setCount] = useState(0);
   const [started, setStarted] = useState(false);
+  const [done, setDone] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,6 +42,7 @@ function AnimatedNumber({ target, suffix, duration = 2000 }: { target: number; s
       current += increment;
       if (current >= target) {
         setCount(target);
+        setDone(true);
         clearInterval(timer);
       } else {
         setCount(Math.floor(current));
@@ -51,7 +53,7 @@ function AnimatedNumber({ target, suffix, duration = 2000 }: { target: number; s
   }, [started, target, duration]);
 
   return (
-    <div ref={ref} className="text-3xl md:text-5xl font-bold text-gradient">
+    <div ref={ref} className={`text-3xl md:text-4xl font-extrabold text-gradient transition-all duration-500 ${done ? 'scale-100' : 'scale-95'}`}>
       {started ? count.toLocaleString('en-IN') : '0'}{suffix}
     </div>
   );
@@ -59,13 +61,15 @@ function AnimatedNumber({ target, suffix, duration = 2000 }: { target: number; s
 
 export default function StatsCounter({ stats }: Props) {
   return (
-    <section className="bg-white border-y border-[#E2E8F0] py-10">
-      <div className="container-main grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <section className="py-10 relative">
+      <div className="container-main grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         {stats.map((s) => (
-          <div key={s.label} className="group">
-            <div className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-300">{s.icon}</div>
+          <div key={s.label} className="stat-card group">
+            <div className="text-2xl mb-3 group-hover:scale-110 group-hover:animate-bounce-gentle transition-transform duration-300">
+              {s.icon}
+            </div>
             <AnimatedNumber target={s.number} suffix={s.suffix} />
-            <div className="text-sm text-[#64748B] mt-2 font-medium">{s.label}</div>
+            <div className="text-sm text-slate-500 mt-2 font-medium">{s.label}</div>
           </div>
         ))}
       </div>
